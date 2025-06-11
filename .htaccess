@@ -1,0 +1,34 @@
+# .htaccess para ELMENU.REST
+
+# Seguridad: bloquear archivos sensibles
+<FilesMatch "\.(db|sqlite|env|ini|log|bak|sh|sql)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Bloquear acceso a config.php
+<Files config.php>
+  Order allow,deny
+  Deny from all
+</Files>
+
+# Bloquear archivos ocultos y de sistema
+RedirectMatch 404 /\..*
+
+# Deshabilitar listado de directorios
+Options -Indexes
+
+# Forzar UTF-8
+AddDefaultCharset UTF-8
+
+# Permitir solo acceso a assets e imágenes
+<FilesMatch "\.(jpg|jpeg|png|webp|svg|css|js|ico)$">
+  Order allow,deny
+  Allow from all
+</FilesMatch>
+
+# Proteger logs fuera de public_html (si aplica)
+# (No necesario si los logs están fuera de la carpeta pública)
+
+# Opcional: Redirección a index.php si se accede a la carpeta
+DirectoryIndex index.php

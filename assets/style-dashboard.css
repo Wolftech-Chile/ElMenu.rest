@@ -1,0 +1,64 @@
+/* style-dashboard.css - Estilos para el panel de administración */
+body {
+  background: #f7f7f7;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+}
+header {
+  background: #fff;
+  padding: 1em 2em;
+  box-shadow: 0 2px 8px #0001;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+header img {
+  border-radius: 50%;
+  margin-right: 1em;
+}
+main {
+  max-width: 900px;
+  margin: 2em auto;
+  background: #fff;
+  padding: 2em;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #0001;
+}
+nav {
+  margin-bottom: 2em;
+}
+nav a {
+  color: #2196F3;
+  text-decoration: none;
+  margin: 0 0.5em;
+  font-weight: bold;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+section {
+  margin-bottom: 2em;
+}
+footer {
+  margin-top: 2em;
+  text-align: center;
+  color: #888;
+}
+input, select, textarea, button {
+  font-size: 1em;
+  padding: 0.5em;
+  margin: 0.3em 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+button {
+  background: #2196F3;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #1769aa;
+}

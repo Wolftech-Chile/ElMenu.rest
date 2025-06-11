@@ -1,0 +1,621 @@
+/* Importar fuentes desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+
+/* style-restaurants.css - Estilos para menú público y paletas visuales actualizados */
+
+/*
+========================================
+Variables CSS de paletas visuales (17+)
+========================================
+- --color1: Color principal (header, botones, fondo destacado)
+- --color2: Fondo general, tarjetas, categorías
+- --color3: Detalles, bordes, precios, hover
+- --colorText: Color de texto principal
+- --colorTextInv: Color de texto invertido
+
+Ejemplo de uso en HTML:
+<body data-theme="chilena">
+  ...
+</body>
+
+Puedes agregar nuevas paletas duplicando un bloque :root[data-theme="..."]
+y cambiando los valores de --color1, --color2, --color3.
+*/
+
+:root[data-theme="italiana"] {
+  --color1: #c1121f; /* Rojo Italiano */
+  --color2: #fdf0d5; /* Crema Toscana */
+  --color3: #006400; /* Verde Oliva */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="asiatica"] {
+  --color1: #b80000; /* Rojo Imperial */
+  --color2: #111111; /* Negro */
+  --color3: #ffd700; /* Dorado */
+  --colorText: #fff;
+  --colorTextInv: #111;
+}
+:root[data-theme="chilena"] {
+  --color1: #002f6c; /* Azul Marino */
+  --color2: #e8dcc2; /* Beige Tierra */
+  --color3: #d52b1e; /* Rojo Chileno */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="peruana"] {
+  --color1: #b71c1c; /* Rojo Andino */
+  --color2: #ffb300; /* Amarillo/Naranja */
+  --color3: #388e3c; /* Verde Esmeralda */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="gourmet"] {
+  --color1: #111111; /* Negro */
+  --color2: #ffffff; /* Blanco */
+  --color3: #bfa14a; /* Dorado/Cobre sutil */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="pubbar"] {
+  --color1: #111111; /* Negro */
+  --color2: #333333; /* Gris Carbón */
+  --color3: #ff6f00; /* Naranja Quemado */
+  --colorText: #fff;
+  --colorTextInv: #111;
+}
+:root[data-theme="comidarapida"] {
+  --color1: #ffe600; /* Amarillo Brillante */
+  --color2: #ffffff; /* Blanco */
+  --color3: #00bcd4; /* Azul o Verde */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="pollos"] {
+  --color1: #ff9800; /* Naranja */
+  --color2: #fff3e0; /* Crema */
+  --color3: #795548; /* Marrón o Verde Oliva */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="mexicana"] {
+  --color1: #e63946; /* Rojo Intenso */
+  --color2: #43aa8b; /* Verde Vibrante */
+  --color3: #ffe600; /* Amarillo Brillante */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="mariscos"] {
+  --color1: #00b4d8; /* Azul Cielo */
+  --color2: #ffffff; /* Blanco */
+  --color3: #48cae4; /* Verde Menta o Coral */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="vegetariana"] {
+  --color1: #388e3c; /* Verde Hoja */
+  --color2: #a1887f; /* Marrón Tierra */
+  --color3: #ffd600; /* Amarillo Mostaza */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="parrillada"] {
+  --color1: #7b1f1f; /* Rojo Vino */
+  --color2: #6d4c41; /* Marrón Caoba */
+  --color3: #222222; /* Negro Carbón */
+  --colorText: #fff;
+  --colorTextInv: #fff;
+}
+:root[data-theme="cafepanaderia"] {
+  --color1: #6f4e37; /* Café Mocca */
+  --color2: #f3e9dc; /* Crema Latte */
+  --color3: #a67c52; /* Marrón Avellana */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="heladeria"] {
+  --color1: #f8bbd0; /* Rosa Pastel */
+  --color2: #b3e5fc; /* Azul Celeste */
+  --color3: #fff9c4; /* Amarillo Vainilla */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="arabemediterranea"] {
+  --color1: #00bcd4; /* Azul Turquesa */
+  --color2: #ffe0b2; /* Beige Arena */
+  --color3: #8d5524; /* Marrón Dátil */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="india"] {
+  --color1: #ff9800; /* Naranja Azafrán */
+  --color2: #fff176; /* Amarillo Curry */
+  --color3: #c62828; /* Rojo Especias */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+:root[data-theme="fusion"] {
+  --color1: #757575; /* Gris Metálico */
+  --color2: #00e5ff; /* Azul Neón */
+  --color3: #4a148c; /* Púrpura Oscuro */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+
+body {
+  background: var(--color2, #f7f7f7);
+  color: #111;
+  font-family: 'Open Sans', 'Montserrat', Arial, sans-serif;
+  margin: 0;
+  font-size: 1.05em;
+}
+header {
+  background: var(--color1, #fff);
+  color: #fff;
+  text-align: center;
+  padding: 1.5em 0 1em 0;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 2px 8px #0001;
+  position: relative;
+  overflow: hidden;
+}
+header img {
+  border-radius: 10px;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  box-shadow: none;
+}
+header h1,
+header .rest-info,
+header .rest-info.slogan,
+header .rest-social a,
+header .rest-social a img {
+  color: #fff !important;
+  fill: #fff !important;
+}
+header .rest-social a img {
+  filter: brightness(0) invert(1);
+}
+.rest-info, .rest-social {
+  margin: 0.5em 0;
+  font-size: 1em;
+}
+.rest-social a img {
+  vertical-align: middle;
+  margin: 0 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  filter: none;
+}
+.categorias-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 10px;
+  white-space: nowrap;
+  scrollbar-width: none;
+  background: var(--color1, #eee);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-radius: 0 0 16px 16px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.categorias-scroll::-webkit-scrollbar { display: none; }
+.categoria {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  background: var(--color2, #fff);
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid var(--color3, #ccc);
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 1em;
+  min-width: 120px;
+  text-align: center;
+}
+@media (max-width: 900px) {
+  .platos, .platos.grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 700px) {
+  .platos, .platos.grid-3 { grid-template-columns: 1fr !important; }
+  .categorias-scroll {
+    padding: 8px 2px 8px 2px;
+    gap: 4px;
+  }
+  .categoria {
+    min-width: 110px;
+    font-size: 0.98em;
+    padding: 8px 10px;
+  }
+}
+.plato {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 1em;
+  background: var(--color2, #fff);
+  border-radius: 10px;
+  box-shadow: 0 1.5px 6px #0001;
+  padding: 0.8em;
+  border: 2px solid var(--color3, #eee);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.plato img {
+  width: 30%;
+  min-width: 80px;
+  max-width: 120px;
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0;
+  background: #fff;
+  border: 1px solid var(--color3, #eee);
+  align-self: center;
+}
+.plato-info {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.plato-info h3 {
+  margin: 0 0 0.2em 0;
+  font-size: 1.1em;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 700;
+  word-break: break-word;
+}
+.plato-info p {
+  margin: 0 0 0.3em 0;
+  font-size: 0.98em;
+  color: #444;
+  word-break: break-word;
+}
+.plato-info .precio-cantidad {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-top: 0.2em;
+}
+.precio {
+  font-weight: bold;
+  color: var(--color3, #c00);
+  font-size: 1.1em;
+  margin-bottom: 0;
+}
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  background: transparent;
+  border-radius: 8px;
+  padding: 1px 4px;
+  height: 28px;
+  font-size: 15px;
+  min-width: 0;
+}
+.cantidad-btn {
+  width: 26px;
+  height: 26px;
+  font-size: 15px;
+  border-radius: 8px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cantidad-num {
+  min-width: 24px;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 2px;
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+@media (max-width: 700px) {
+  .plato {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.7em;
+  }
+  .plato img {
+    width: 100%;
+    max-width: 180px;
+    min-width: 80px;
+    margin-bottom: 0.4em;
+  }
+  .plato-info {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+  .plato-info .precio-cantidad {
+    flex-direction: column;
+    gap: 0.2em;
+    align-items: center;
+  }
+}
+footer {
+  text-align: center;
+  color: #888;
+  margin: 2em 0 1em 0;
+  font-size: 0.98em;
+}
+/* Resumen de pedido fijo */
+.resumen-pedido {
+  position: fixed;
+  left: 5px;
+  bottom: 5px;
+  background: var(--color1, #fff);
+  color: #111;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #0002;
+  padding: 1.2em 1.5em 1.2em 1.2em;
+  min-width: 100px;
+  z-index: 100;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  border: 2px solid var(--color3, #eee);
+  align-items: flex-start;
+}
+.resumen-pedido h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  color: #111;
+  letter-spacing: 0.5px;
+}
+.resumen-pedido .btn-whatsapp {
+  background: #25d366;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7em 1.2em;
+  font-size: 1.1em;
+  font-family: 'Montserrat', Arial, sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+.resumen-pedido .btn-whatsapp:hover {
+  background: #128c7e;
+}
+.resumen-pedido .btn-limpiar {
+  background: var(--color3, #eee);
+  color: #111;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  font-family: 'Montserrat', Arial, sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.2em;
+}
+.resumen-pedido .btn-limpiar:hover {
+  background: var(--color1, #ccc);
+  color: #fff !important;
+}
+@media (max-width: 900px) {
+  .resumen-pedido { left: 8px; bottom: 8px; min-width: 180px; padding: 1em; }
+}
+@media (max-width: 700px) {
+  .resumen-pedido {
+    left: 0; right: 0; bottom: 0;
+    border-radius: 16px 16px 0 0;
+    min-width: unset;
+    width: 100vw;
+    box-shadow: 0 -2px 12px #0002;
+    padding: 1em 0.5em 1.2em 0.5em;
+    font-size: 1em;
+    align-items: stretch;
+  }
+}
+
+/* Grid de platos: 3 columnas desktop, 2 tablet, 1 móvil */
+.platos, .platos.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5em;
+}
+/* TIPOGRAFÍAS Y TAMAÑOS SEGUN REQUERIMIENTO */
+h1 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0.2em 0 0.1em 0;
+  color: #111;
+}
+h2 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  margin: 1.2em 0 0.5em 0;
+  /* scroll-margin-top eliminado, ahora se aplica a la sección */
+}
+section[id^="cat"] {
+  scroll-margin-top: 110px;
+}
+@media (max-width: 700px) {
+  section[id^="cat"] {
+    scroll-margin-top: 90px;
+  }
+}
+h3 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0.7em 0 0.3em 0;
+}
+h4 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0.7em 0 0.3em 0;
+}
+.slogan, .rest-info.slogan {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0.5em 0 1em 0;
+}
+p, .plato-info p, .categoria-bloque p, .rest-info:not(.slogan) {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0.2em 0 0.2em 0;
+}
+
+/* BOTONES Y CONTROLES MEJORADOS */
+button, .btn, .cantidad-btn, .resumen-pedido .btn-whatsapp, .resumen-pedido .btn-limpiar {
+  border-radius: 10px !important;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 1.08em;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  padding: 0.6em 1.2em;
+  background: var(--color1, #eee);
+  color: #111 !important;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px #0001;
+  margin: 0.2em 0.2em 0.2em 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+button:hover, .btn:hover, .cantidad-btn:hover, .resumen-pedido .btn-whatsapp:hover, .resumen-pedido .btn-limpiar:hover {
+  background: var(--color3, #222);
+  color: #fff !important;
+}
+
+/* CONTROL DE CANTIDAD SUAVE */
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  background: transparent;
+  border-radius: 8px;
+  padding: 1px 4px;
+  height: 28px;
+  font-size: 15px;
+  min-width: 0;
+}
+.cantidad-btn {
+  width: 26px;
+  height: 26px;
+  font-size: 15px;
+  border-radius: 8px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cantidad-num {
+  min-width: 24px;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 2px;
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+
+/* Resumen de pedido mejorado */
+.resumen-pedido {
+  position: fixed;
+  left: 5px;
+  bottom: 5px;
+  background: var(--color1, #fff);
+  color: #111;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #0002;
+  padding: 1.2em 1.5em 1.2em 1.2em;
+  min-width: 100px;
+  z-index: 100;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  border: 2px solid var(--color3, #eee);
+  align-items: flex-start;
+}
+.resumen-pedido h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  color: #111;
+  letter-spacing: 0.5px;
+}
+@media (max-width: 900px) {
+  .resumen-pedido { left: 8px; bottom: 8px; min-width: 180px; padding: 1em; }
+}
+@media (max-width: 700px) {
+  .resumen-pedido {
+    left: 0; right: 0; bottom: 0;
+    border-radius: 16px 16px 0 0;
+    min-width: unset;
+    width: 100vw;
+    box-shadow: 0 -2px 12px #0002;
+    padding: 1em 0.5em 1.2em 0.5em;
+    font-size: 1em;
+    align-items: stretch;
+  }
+}
+
+/* CATEGORÍAS DESLIZABLES EN MÓVIL */
+.categorias-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* CONTRASTES Y ACCESIBILIDAD */
+:focus {
+  outline: 2px solid var(--color3, #888);
+  outline-offset: 2px;
+}
+::-webkit-input-placeholder { color: #aaa; }
+::-moz-placeholder { color: #aaa; }
+:-ms-input-placeholder { color: #aaa; }
+::placeholder { color: #aaa; }
+
+/* Documentación rápida:
+- Para cambiar la paleta, usa <body data-theme="nombrepaleta">
+- Puedes personalizar fuentes, colores y radios en cada bloque :root[data-theme="..."]
+- El grid de platos es de 3 columnas en desktop, 2 en tablet, 1 en móvil
+- Los botones y controles usan border-radius 10px
+- El resumen de pedido es fijo abajo a la izquierda (desktop) o abajo (móvil)
+*/
