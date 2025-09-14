@@ -1,0 +1,38 @@
+
+2 · Footer
+En desktopy movil el mapa (iframe) debe ser visible y no desbordar:
+
+· Encapsularlo en un contenedor con tamaño fijo y centrado dentro de su columna.
+
+Sigue sin funcionar, lo probe en internet y no muestra el html de un iframe, si muestra este html simple pero no respeta el CSS
+<html>
+<head>
+<title>Hola Mundo</title>
+<style>
+  body {
+    text-align: center;
+    color: yellow;
+    font-size: 24px;
+  }
+</style>
+</head>
+<body>
+  <h1>Hola Mundo</h1>
+</body>
+</html>
+
+
+
+
+4. Boton Guardar Universal - NO FUNCIONA Y DEJA LA CAGA
+Creo que es mejor universal que Gurqde todos los cambios, llamado "Guardar Cambios" este deberia estar posicionado en el class="app-header"
+
+
+
+
+
+
+
+
+
+Preguntar a ChatGPT

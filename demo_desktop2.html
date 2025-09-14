@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Dashboard - desktop2.css</title>
+  <link rel="stylesheet" href="assets/css/desktop2.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">MiApp</div>
+    <nav>
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Usuarios</a>
+      <a href="#">Pedidos</a>
+      <a href="#">Reportes</a>
+      <a href="#">Ajustes</a>
+    </nav>
+  </aside>
+  <header class="topbar">
+    <span>Panel de Administración</span>
+    <div class="user">
+      <span class="user-avatar">MG</span>
+      <span>Admin</span>
+    </div>
+  </header>
+  <main class="main">
+    <!-- Card de ejemplo -->
+    <section class="card-demo" id="card-ejemplo1">
+      <div class="card-demo-title">Card de ejemplo</div>
+      <div class="card-demo-content">Este es un ejemplo de card, útil para mostrar métricas, avisos o widgets.</div>
+    </section>
+    <!-- Tabla de ejemplo -->
+    <table class="table-demo" id="tabla-ejemplo1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>María</td><td>maria@mail.com</td><td>Admin</td></tr>
+        <tr><td>2</td><td>Juan</td><td>juan@mail.com</td><td>Editor</td></tr>
+        <tr><td>3</td><td>Lucía</td><td>lucia@mail.com</td><td>Usuario</td></tr>
+      </tbody>
+    </table>
+    <!-- Formulario de ejemplo -->
+    <form class="form-demo" id="form-ejemplo1">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" placeholder="Nombre completo">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="correo@ejemplo.com">
+      <label for="rol">Rol</label>
+      <select id="rol" name="rol">
+        <option>Admin</option>
+        <option>Editor</option>
+        <option>Usuario</option>
+      </select>
+      <button type="submit">Guardar</button>
+    </form>
+  </main>
+</body>
+</html>

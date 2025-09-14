@@ -1,0 +1,767 @@
+/*
+  desktop2.css - Estilos inspirados en TailAdmin y registro_usuario.php
+  - Sidebar moderno y responsivo
+  - Topbar
+  - Cards de ejemplo
+  - Tabla de ejemplo
+  - Formulario de ejemplo
+  Paleta de colores tomada de desktop.css
+*/
+
+:root {
+  /* Paleta de colores */
+  --color-primario: #7ac943;
+  --color-secundario: #333;
+  --color-fondo: #f5f5f5;
+  --color-texto: #333;
+  --color-borde: #ddd;
+  --color-error: #e74c3c;
+  --color-exito: #2ecc71;
+  
+  /* Colores modo noche */
+  --color-fondo-noche: #1a1a1a;
+  --color-texto-noche: #f0f0f0;
+  --color-borde-noche: #444;
+  
+  /* Tamaños y espaciados */
+  --border-radius: 5px;
+  --espaciado: 20px;
+  --header-height: 60px;
+  --sidebar-width: 250px;
+  
+  /* Sombras */
+  --sombra: 0 0 20px rgba(0, 0, 0, 0.1);
+  --sombra-input: 0 0 0 2px rgba(122, 201, 67, 0.2);
+  
+  /* Transiciones */
+  --transicion: all 0.3s ease;
+  
+  /* Fuentes */
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-min: 16px;
+  --font-max: 22px;
+}
+
+html {
+  font-size: var(--font-min);
+  font-family: var(--font-family);
+}
+
+body {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* TOPBAR TOGGLES */
+.topbar-toggles {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-left: 2em;
+}
+
+.text-size-toggle, .toggle-modo {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+}
+.text-size-toggle label, .toggle-modo label {
+  background: #fff;
+  color: var(--color-primario);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--border-radius);
+  padding: 0.4em 0.8em;
+  font-weight: 600;
+  font-size: 0.95em;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  text-align: center;
+  min-width: 40px;
+}
+
+.text-size-toggle input[type="radio"], 
+.toggle-modo input[type="radio"] {
+  display: none;
+}
+
+.text-size-toggle input#font16:checked ~ label[for="font16"],
+.text-size-toggle input#font18:checked ~ label[for="font18"],
+.text-size-toggle input#font20:checked ~ label[for="font20"],
+.text-size-toggle input#font22:checked ~ label[for="font22"],
+.toggle-modo input#dia:checked ~ label[for="dia"],
+.toggle-modo input#noche:checked ~ label[for="noche"] {
+  background: var(--color-primario);
+  color: #fff;
+}
+/* Tamaños de fuente para el body */
+body.font16 { font-size: 16px; }
+body.font18 { font-size: 18px; }
+body.font20 { font-size: 20px; }
+body.font22 { font-size: 22px; }
+
+/* Toggle día/noche visual */
+.toggle-modo {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 1.2em;
+}
+.toggle-modo label {
+  background: #fff;
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 0.2em 0.8em;
+  font-weight: bold;
+  font-size: 1.1em;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s, color 0.2s;
+}
+.toggle-modo input[type="radio"] {
+  display: none;
+}
+.toggle-modo input#dia:checked ~ label[for="dia"],
+.toggle-modo input#noche:checked ~ label[for="noche"] {
+  background: var(--color-accent);
+  color: #fff;
+}
+body.modo-dia {
+  background: var(--color-bg-light);
+  color: var(--color-primary);
+}
+body.modo-dia .sidebar, body.modo-dia .topbar {
+  background: var(--color-primary);
+  color: #fff;
+}
+body.modo-dia .main, body.modo-dia .card-demo, body.modo-dia .form-demo {
+  background: var(--color-card);
+  color: var(--color-primary);
+}
+body.modo-dia .table-demo th {
+  background: var(--color-primary);
+  color: #fff;
+}
+body.modo-dia .form-demo input,
+body.modo-dia .form-demo select {
+  background: #fff;
+  color: var(--color-primary);
+  border-color: var(--color-border);
+}
+body.modo-dia .form-demo button {
+  background: var(--color-accent);
+  color: #fff;
+}
+body.modo-dia .alerta-demo {
+  background: #fff;
+  border-color: #e53935;
+  color: #e53935;
+}
+
+body.modo-noche {
+  background: var(--color-bg);
+  color: #fff;
+}
+body.modo-noche .sidebar, body.modo-noche .topbar {
+  background: #181a1b;
+  color: #fff;
+}
+body.modo-noche .main,
+body.modo-noche .card-demo,
+body.modo-noche .form-demo {
+  background: var(--color-fondo-noche);
+  color: var(--color-texto-noche);
+  border-color: var(--color-borde-noche);
+}
+body.modo-noche .table-demo th {
+  background: var(--color-secundario);
+  color: #fff;
+  border: 1px solid var(--color-borde-noche);
+  border-radius: var(--border-radius);
+  padding: 1em 1.2em;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 0.5px;
+}
+.alerta-demo.alerta-ok {
+  background: #e6f4ea;
+  border-color: #43a047;
+  color: #2e7d32;
+}
+
+/* Formularios y botones */
+.form-demo label {
+  color: var(--color-secondary);
+  font-weight: 600;
+  margin-bottom: 0.5em;
+  display: block;
+}
+
+.form-demo input,
+.form-demo select {
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+  font-size: 1.08em;
+  padding: 1em 1.1em;
+  margin-bottom: 1.3em;
+  color: var(--color-secondary);
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px #0001;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.form-demo input:focus,
+.form-demo select:focus {
+  border-color: var(--color-primario);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(122, 201, 67, 0.2);
+}
+
+.form-demo button {
+  background: var(--color-primario);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 1em 2em;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: inline-block;
+  text-align: center;
+}
+
+.form-demo button:hover {
+  background: #5a5a5a;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Alertas */
+.alerta-demo {
+  background: #fff3e0;
+  border: 1.5px solid #ff9800;
+  color: #e65100;
+  border-radius: 12px;
+  padding: 1.1em 1em;
+  margin-bottom: 1.2em;
+  font-size: 1.1em;
+  font-weight: 600;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+}
+
+.alerta-demo.alerta-error {
+  background: #ffebee;
+  border-color: #e53935;
+  color: #e53935;
+}
+
+/* Modo Noche */
+body.modo-noche {
+  background: #1a1a1a;
+  color: #f0f0f0;
+}
+
+body.modo-noche .form-demo input,
+body.modo-noche .form-demo select {
+  background: #23272a;
+  color: #f0f0f0;
+  border-color: #444;
+}
+
+body.modo-noche .form-demo button {
+  background: var(--color-primario);
+  color: #000;
+}
+
+body.modo-noche .alerta-demo {
+  background: #2c2c2c;
+  border-color: #ff9800;
+  color: #fff3e0;
+}
+
+body.modo-noche .form-demo label {
+  color: #f0f0f0;
+}
+
+/* Variables de color */
+:root {
+  --color-primary: #7ac943;
+  --color-primary-dark: #5a5a5a;
+  --color-secondary: #333;
+  --color-bg: #f5f5f5;
+  --color-card: #fff;
+  --color-accent: #7ac943;
+  --color-border: #ddd;
+  --color-success: #43a047;
+  --color-danger: #e53935;
+  --color-info: #039be5;
+  --sidebar-width: 250px;
+}
+
+body {
+  background: var(--color-bg);
+  margin: 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  color: var(--color-secondary);
+}
+
+.sidebar {
+  background: var(--color-primary-dark);
+  color: #fff;
+}
+.sidebar nav a.active,
+.sidebar nav a:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+.topbar {
+  background: var(--color-primary);
+  color: #fff;
+  border-bottom: none;
+  box-shadow: 0 2px 8px rgba(34,34,34,.09);
+}
+.topbar span,
+.topbar .user span {
+  color: #fff;
+}
+.card-demo {
+  background: var(--color-card);
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(34,34,34,.07);
+  border: 1px solid var(--color-border);
+  max-width: 440px;
+}
+.card-demo-title {
+  color: var(--color-primary-dark);
+  font-size: 1.15rem;
+}
+.table-demo th {
+  background: var(--color-primary-dark);
+  color: #fff;
+}
+.table-demo tr:hover td {
+  background: #fff3e0;
+}
+.form-demo {
+  background: var(--color-card);
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(34,34,34,.07);
+  border: 1px solid var(--color-border);
+  max-width: 440px;
+}
+.form-demo label {
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+.form-demo input,
+.form-demo select {
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1.5px solid var(--color-border);
+  font-size: 1em;
+  transition: border 0.2s;
+  margin-bottom: 1.1em;
+}
+.form-demo input:focus,
+.form-demo select:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+.form-demo button {
+  background: var(--color-primary-dark);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.9em 1.7em;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 1px 4px #0002;
+}
+.form-demo button:hover {
+  background: var(--color-primary);
+}
+
+
+body {
+  background: var(--color-bg);
+  margin: 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  color: var(--color-secondary);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--color-secondary);
+  color: #fff;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  min-height: 100vh;
+  padding: 2rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: width 0.3s;
+}
+@media (max-width: 900px) {
+  .sidebar {
+    width: 64px;
+    padding: 1rem 0.2rem;
+  }
+  .sidebar .logo {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+/* DASHBOARD GRID */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* MAIN LAYOUT */
+.main {
+  flex: 1 1 0%;
+  margin-left: var(--sidebar-width);
+  padding: 2rem;
+  min-height: 100vh;
+  background: var(--color-bg);
+  transition: margin-left 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2rem;
+}
+
+/* Si el sidebar está presente, adapta el layout. Si no, el main ocupa todo el ancho */
+@media (max-width: 900px) {
+  .main {
+    margin-left: 64px;
+    padding: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .main {
+    margin-left: 0;
+    padding: 0.6rem;
+  }
+}
+
+/* Sidebar y main pueden estar como hermanos directos */
+.sidebar + .main {
+  margin-left: var(--sidebar-width);
+}
+@media (max-width: 900px) {
+  .sidebar + .main {
+    margin-left: 64px;
+  }
+}
+@media (max-width: 600px) {
+  .sidebar + .main {
+    margin-left: 0;
+  }
+}
+
+/* Cards, tablas y formularios centrados y fluidos */
+.card-demo, .form-demo {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 2rem auto;
+}
+.table-demo {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 2rem auto;
+  background: var(--color-card);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(34,34,34,.04);
+}
+
+
+/* Cards, tablas y formularios centrados y fluidos */
+.card-demo, .form-demo {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.table-demo {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 2rem auto;
+  background: var(--color-card);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(34,34,34,.04);
+}
+
+@media (max-width: 900px) {
+  .main {
+    margin-left: 64px;
+    padding: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .main {
+    margin-left: 0;
+    padding: 0.6rem;
+  }
+}
+
+/* TOPBAR */
+.topbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  z-index: 10;
+}
+@media (max-width: 900px) {
+  .topbar {
+    padding: 0 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .topbar {
+    padding: 0 0.5rem;
+  }
+}
+.topbar .user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.topbar .user-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-weight: bold;
+}
+
+.sidebar .logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+.sidebar nav {
+  flex: 1;
+}
+.sidebar nav a {
+  display: block;
+  padding: 0.9em 1em;
+  margin-bottom: 0.5em;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.sidebar nav a.active,
+.sidebar nav a:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* TOPBAR */
+.topbar {
+  margin-left: var(--sidebar-width);
+  height: 64px;
+  background: var(--color-card);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar .user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.topbar .user-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* MAIN LAYOUT */
+.main {
+  margin-left: var(--sidebar-width);
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+/* CARDS */
+.card-demo {
+  background: var(--color-card);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(34,34,34,.05);
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--color-border);
+  max-width: 420px;
+  width: 100%;
+}
+.card-demo-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+.card-demo-content {
+  color: var(--color-secondary);
+  font-size: 1rem;
+}
+
+/* TABLE DEMO */
+.table-demo {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-card);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(34,34,34,.04);
+}
+.table-demo th, .table-demo td {
+  padding: 1em 1.2em;
+  text-align: left;
+}
+.table-demo th {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-border);
+}
+.table-demo tr:not(:last-child) td {
+  border-bottom: 1px solid var(--color-border);
+}
+.table-demo tr:hover td {
+  background: #fff3e0;
+}
+
+/* FORM DEMO */
+.form-demo {
+  background: var(--color-card);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(34,34,34,.05);
+  border: 1px solid var(--color-border);
+}
+.form-demo label {
+  display: block;
+  margin-bottom: 0.5em;
+  font-weight: 500;
+  color: var(--color-secondary);
+}
+.form-demo input,
+.form-demo select {
+  width: 100%;
+  padding: 0.7em 1em;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  margin-bottom: 1.2em;
+  font-size: 1em;
+  background: #f8fafc;
+  color: var(--color-secondary);
+  transition: border 0.2s;
+}
+.form-demo input:focus,
+.form-demo select:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+.form-demo button {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9em 1.6em;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.form-demo button:hover {
+  background: var(--color-accent);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 64px;
+    padding: 1rem 0.2rem;
+  }
+  .sidebar .logo {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .main, .topbar {
+    margin-left: 64px;
+    padding: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
+  .topbar, .main {
+    margin-left: 0;
+    padding: 0.6rem;
+  }
+  .card-demo, .form-demo {
+    padding: 1.2rem 0.5rem;
+    max-width: 100%;
+  }
+  .table-demo th, .table-demo td {
+    padding: 0.6em 0.5em;
+  }
+}
+
+/* --- Ejemplo de clases para identificar componentes en HTML --- */
+/*
+  <aside class="sidebar"> ... </aside>
+  <header class="topbar"> ... </header>
+  <main class="main">
+    <section class="card-demo" id="card-ejemplo1"> ... </section>
+    <table class="table-demo" id="tabla-ejemplo1"> ... </table>
+    <form class="form-demo" id="form-ejemplo1"> ... </form>
+  </main>
+*/

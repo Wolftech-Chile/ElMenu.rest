@@ -1,0 +1,376 @@
+
+PROYECTO: ELMENU.REST – Sistema de Menú Digital para Restaurantes
+
+URL base por restaurante:
+https://elmenu.rest/{nombre-del-restaurante}
+
+TECNOLOGÍAS BASE:
+- PHP (sin frameworks)
+- SQLite (una DB por restaurante)
+- HTML5, CSS3 (con variables), JavaScript
+- Compatible con cPanel
+- Seguridad: bcrypt, CSRF, XSS, SQLi, session hardening
+
+ESTRUCTURA DE ARCHIVOS:
+/elmenu.rest/
+├── {restaurante}/
+│   ├── index.php
+│   ├── login.php
+│   ├── dashboard.php
+│   ├── logout.php
+│   ├── config.php
+│   ├── .htaccess
+│   ├── restaurante.db
+│   ├── /img/
+│   ├── /assets/
+│   │   ├── style-dashboard.css
+│   │   ├── style-restaurants.css
+│   │   └── scripts.js
+
+SEGURIDAD:
+- bcrypt para contraseñas (cost=12)
+- Regeneración de ID de sesión al login
+- CSRF Token: bin2hex(random_bytes(32))
+- XSS: htmlspecialchars + HTMLPurifier
+- SQLi: consultas preparadas (PDO)
+- Fuerza bruta: bloqueo progresivo tras 3 intentos
+- Logs fuera del public root
+
+FUNCIONALIDADES POR ROL:
+
+| Acción                        | Admin | Restaurant |
+|-----------------------------|--------|------------|
+| Crear/Eliminar Categorías (INFINITAS)  | ✅      | ✅         |
+| Editar nombre Categorías (INFINITAS)    | ✅      | ✅         |
+| Drag & Drop categorías       | ✅      | ✅         |
+| CRUD Platos (INFINITOS)      | ✅      | ✅         |
+| Editar info restaurante     | ✅      | ✅         |
+| Editar SEO                  | ✅      | ✅         |
+| Personalización visual      | ✅      | ✅         |
+| Subida de imágenes          | ✅      | ✅         |
+| Configuraciones avanzadas  | ✅      | ❌         |
+| Ver logs seguridad          | ✅      | ❌         |
+| Exportar CSV                | ✅      | ❌         |
+| DÍAS DE LICENCIA COMPRADOS  | ✅      | ❌         |
+
+PANEL WYSIWYG (DASHBOARD):
+
+[Info RESTAURANTE y SEO]
+- Nombre restaurant
+- Slogan del restaurant (Subtitulo bajo el nombre del restaurant)
+- Dirección
+- Pais
+- Ciudad
+- Horario (formato HH:MM - HH:MM)
+- Teléfono (+56 9 XXXX XXXX)
+- Facebook / Instagram (URL validado)
+- Logo (se muestra redimensionado en INDEX en 300x300px) y se usara como Featured image SEO también
+- Fondo header
+
+[SEO]
+
+- Descripción SEO (máx 160 caracteres)
+- Featured image SEO (WebP 1200x630px)
+- Meta descripcion
+- Featured image (logo)
+- og:title, og:image dinámicos
+- Schema.org para restaurant
+-
+
+
+[CATEGORÍAS Y PLATOS]
+- Mínimo 6 categorías, 2 platos por categoría
+- Drag & Drop para orden
+- Nombre, descripción, precio (CLP sin decimales), imagen (max 3MB)
+
+PERSONALIZACIÓN VISUAL:
+17 paletas temáticas, definidas por variables CSS
+
+
+
+JS CLIENTE:
+- localStorage + IndexedDB para cache
+- Resumen con propina 10% (no sticky)
+- Botón limpiar pedido
+- Botón WhatsApp: https://wa.me/+56XXXXXXXXX?text=...
+- SVG botones:
+  - /img/whatsapp.svg
+  - /img-app/facebook.svg
+  - /img-app/instagram.svg
+
+RECOMENDACIONES:
+- install.php para validar entorno
+- Documentar variables CSS
+- Usar GD Library para imágenes
+- AJAX sin recarga
+- Sanitizar iframe maps
+- Logs fuera de public_html
+
+ENTREGABLE FINAL:
+- Sistema funcional en cPanel
+- DB precargada: Don Gussini, +56945787874, Av. Siempre Viva 742
+- 6 categorías, 2 platos c/u
+- Credenciales:
+  - Admin: admin / admin123
+  - Restaurant: restaurant / restaurant123
+- README.txt explicativo para niño de 10 años
+
+(Secciones de referencia visual, control de licencia y localización incluidas tal como fueron redactadas por el usuario)
+
+
+############################################
+## ⏳ CONTROL DE LICENCIA DE USO
+############################################
+
+Para mantener control comercial del sistema ELMENU, cada instancia del restaurante tendrá una licencia por tiempo limitado, definida en días o con una fecha exacta de expiración.
+
+Esta fecha puede estar configurada manualmente en `config.php` o registrada en la base de datos del restaurante por el administrador.
+
+### 🔐 Acceso por rol:
+
+- **Administrador:** Puede modificar el número de días de vigencia o la fecha de expiración.
+- **Usuario Restaurante:** Solo puede visualizar la vigencia actual, con un mensaje como:
+  > "Su licencia es por **XX días** y expirará el **dd/mm/yyyy**."
+
+### 🔔 Comportamiento esperado en `dashboard.php`:
+
+1. Si faltan 30 días o menos para que expire:
+   - Mostrar un aviso visible pero no bloqueante.
+   - Incluir enlace a WhatsApp para renovar.
+
+2. Siempre debe mostrarse el mensaje de vigencia, aunque falten muchos días.
+
+### 🧪 Fragmento PHP sugerido para `dashboard.php` (usuario restaurante):
+
+```php
+// Configuración de fecha de expiración
+$fecha_licencia = '01-10-2025'; // Formato dd-mm-yyyy
+$fecha_obj = DateTime::createFromFormat('d-m-Y', $fecha_licencia);
+$hoy = new DateTime();
+$dias_restantes = $fecha_obj->diff($hoy)->format('%r%a');
+
+echo "<div style='background: #e7f3fe; border-left: 4px solid #2196F3; padding: 10px; margin-bottom: 15px; font-size: 14px;'>
+    📅 Su licencia es por <strong>" . ($dias_restantes >= 0 ? $dias_restantes : 0) . " días</strong> y expirará el <strong>{$fecha_licencia}</strong>.
+</div>";
+
+if ($dias_restantes <= 30 && $dias_restantes >= 0) {
+    echo "<div style='background: #fff3cd; border: 1px solid #ffeeba; padding: 10px; margin-bottom: 15px; font-weight: bold;'>
+        ⚠️ Su licencia vencerá en <strong>$dias_restantes días</strong>. 
+        Por favor <a href='https://wa.me/+56XXXXXXXXX' target='_blank'>comuníquese con soporte</a> para renovarla.
+    </div>";
+}
+```
+
+Este control permite mantener el sistema completamente libre para el usuario, pero con visibilidad de su vigencia, reforzando el vínculo con el soporte técnico y la renovación comercial.
+
+
+############################################
+## 📘 README INTEGRADO (DOCUMENTACIÓN FINAL)
+############################################
+
+
+# 📖 ELMENU - Sistema de Menú Digital para Restaurantes
+
+Bienvenido a **ELMENU**, una aplicación web que permite crear menús digitales para restaurantes de forma fácil, visual y segura.
+
+> ⚠️ Importante: Este sistema **NO está diseñado solo para un restaurante**.  
+> Se puede replicar para cualquier cantidad de restaurantes, cada uno con su propia carpeta y base de datos.  
+> Los datos de “Don Gusso” son solo un ejemplo.
+
+---
+
+## 🧠 ¿Qué es ELMENU?
+
+ELMENU es una aplicación sencilla (no usa frameworks) para crear menús online.  
+Cada restaurante tiene su propia carpeta dentro del sitio web y puede administrar su menú sin afectar a los demás.
+
+---
+
+## 🧩 Estructura de carpetas
+
+El sitio web `https://elmenu.rest/` tendrá una estructura como esta:
+
+```
+elmenu.rest/
+├── restaurante1/
+│   ├── index.php
+│   ├── login.php
+│   ├── dashboard.php
+│   ├── restaurante1.db
+│   ├── config.php
+│   └── ...
+├── restaurante2/
+├── restaurante3/
+```
+
+Cada carpeta contiene:
+- Archivos PHP para mostrar y administrar el menú
+- Una base de datos SQLite propia
+- Archivos de estilo y scripts
+
+---
+
+## 🛠 ¿Cómo se instala un nuevo restaurante?
+
+### Paso 1: Copia una carpeta base
+Duplica la carpeta de ejemplo (como `don_gusso/`) y renómbrala con el nombre del nuevo restaurante (por ejemplo, `pizzeria_roma/`).
+
+### Paso 2: Cambia el nombre de la base de datos
+Renombra el archivo `.db` para que tenga el mismo nombre del restaurante (ej: `pizzeria_roma.db`).
+
+### Paso 3: Edita el archivo `config.php`
+Abre `config.php` y cambia:
+```php
+$db_file = "pizzeria_roma.db";
+```
+
+### Paso 4: ¡Listo!
+Ya puedes visitar `https://elmenu.rest/pizzeria_roma/` y ver el menú del nuevo restaurante.
+
+---
+
+## 🔐 ¿Quién puede editar qué?
+
+- **Administrador:** Puede agregar categorías, platos, cambiar paleta de colores, ver errores, y más.
+- **Usuario restaurante:** Puede editar la información básica del restaurante, logo, redes sociales, y platos existentes.  
+  ❌ No puede crear nuevas categorías.
+
+---
+
+## 🎨 Personalización visual
+
+Cada restaurante puede elegir entre **17 paletas de colores** como:
+- Italiana
+- Chilena
+- Mexicana
+- Vegetariana
+- Café & Pastelería
+- y más...
+
+Estas paletas cambian los colores del menú con solo un clic. ¡No hay que saber programar!
+
+---
+
+## 🤖 Para Codex, Copilot o desarrolladores
+
+Esta aplicación:
+- No usa frameworks
+- Usa solo PHP + SQLite + HTML + CSS + JS
+- Usa variables CSS para cambiar estilos
+- Tiene archivos mínimos por restaurante
+- Está optimizada para cPanel y servidores compartidos
+
+Puedes generar código o modificar componentes editando:
+- `dashboard.php`: para la administración
+- `index.php`: para mostrar el menú público
+- `config.php`: para configurar la conexión
+- `scripts.js`: para acciones dinámicas
+- `style-dashboard.css` y `style-restaurants.css`: para cambiar estilos
+
+---
+
+## 🧪 Datos de ejemplo
+
+La carpeta `don_gusso/` contiene un restaurante precargado con:
+- 6 categorías (Entradas, Platos, Postres, etc.)
+- 2 platos por categoría
+- Información ficticia: dirección, teléfono, etc.
+- Imágenes de ejemplo
+
+Puedes usarlo como plantilla para crear tus propios restaurantes.
+
+---
+
+## 🤓 Requisitos
+
+- Servidor con PHP 7.4 o superior
+- cPanel compatible
+- SQLite habilitado
+- Navegador moderno (Chrome, Firefox, Safari)
+
+---
+
+## ✨ Créditos
+
+Desarrollado por **Andesbytes.cl**  
+Este sistema es autoadministrable y pensado para emprendedores gastronómicos que necesitan una solución digital rápida y sin costos mensuales.
+
+---
+
+
+
+############################################
+## 🎨 PERSONALIZACIÓN VISUAL - PALETAS CSS
+############################################
+
+Cada restaurante puede elegir entre 22 estilos visuales distintos, aplicados a través del atributo:
+<body data-theme="nombre-del-tema">
+
+El archivo de estilos debe incluir una estructura como esta:
+
+:root[data-theme="chilena"] {
+  --color1: #002f6c;  /* Azul Marino */
+  --color2: #e8dcc2;  /* Beige Tierra */
+  --color3: #d52b1e;  /* Rojo Chileno */
+}
+
+### Paletas disponibles (colores de ejemplo para referencia visual):
+
+- Italiana: Rojo Italiano, Crema Toscana, Verde Oliva
+- Asiática: Rojo Imperial, Negro, Dorado
+- Chilena: Azul Marino, Beige Tierra, Rojo Chileno
+- Peruana: Rojo Andino, Amarillo/Naranja, Verde Esmeralda
+- Gourmet: Negro, Blanco, Dorado o Cobre sutil
+- Pub & Bar: Negro, Gris Carbón, Naranja Quemado
+- Comida Rápida: Amarillo Brillante, Blanco, Azul o Verde
+- Pollos: Naranja, Crema, Marrón o Verde Oliva
+- Mexicana: Rojo Intenso, Verde Vibrante, Amarillo Brillante
+- Mariscos: Azul Cielo, Blanco, Verde Menta o Coral
+- Vegetariana: Verde Hoja, Marrón Tierra, Amarillo Mostaza
+- Parrillada & Steakhouse: Rojo Vino, Marrón Caoba, Negro Carbón
+- Café & Panadería: Café Mocca, Crema Latte, Marrón Avellana
+- Heladería & Postres: Rosa Pastel, Azul Celeste, Amarillo Vainilla
+- Comida Árabe & Mediterránea: Azul Turquesa, Beige Arena, Marrón Dátil
+- Comida India: Naranja Azafrán, Amarillo Curry, Rojo Especias
+- Fusión & Moderno: Gris Metálico, Azul Neón, Púrpura Oscuro
+- Británico: Azul Real, Crema Suave, Rojo Bandera
+- Alemán: Negro Carbón, Rojo Fuego, Amarillo Mostaza
+- Asiático General: Verde Bambu, Marfil, Rojo Sakura
+- Hindú: Naranja Fuego, Púrpura Azulado, Amarillo Cúrcuma
+- Sushi: Blanco Arroz, Negro Alga, Rojo Salmón
+
+Todas las combinaciones están definidas por variables CSS centralizadas.
+
+
+############################################
+## 📱 CATEGORÍAS EN MÓVIL - SCROLL HORIZONTAL
+############################################
+
+En dispositivos móviles, la barra de categorías debe visualizarse como una lista deslizante horizontal con estilo sticky.
+
+### Requisitos:
+- Debe permitir desplazamiento lateral (horizontal scroll)
+- Debe ser sticky en la parte superior o justo debajo del header
+- Compatible con pantallas desde 320px
+
+### CSS sugerido:
+
+.categorias-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 10px;
+  white-space: nowrap;
+  scrollbar-width: none; /* Firefox */
+}
+.categorias-scroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+.categoria {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  background-color: var(--color2);
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}

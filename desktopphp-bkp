@@ -1,0 +1,855 @@
+<?php
+// desktop.php - Panel de administración principal
+// Versión: Diseño profesional minimalista con modo claro/oscuro
+
+require_once 'config.php';
+require_once 'core/Database.php';
+require_once 'includes/helpers.php';
+require_once 'core/License.php';
+require_once 'models/Config.php';
+require_once 'models/Categoria.php';
+require_once 'models/Plato.php';
+require_once 'core/Auth.php';
+require_once 'includes/temas.php';
+
+// --- Autenticación -------------------------
+session_start();
+if (empty($_SESSION['usuario_id']) || empty($_SESSION['rol'])) {
+    header('Location: login.php');
+    exit;
+}
+$es_admin = ($_SESSION['rol'] === 'admin');
+
+// --- Datos generales -----------------------
+$pdo     = Database::get();
+$config  = new Config($pdo);
+$license = new License($pdo);
+$lic     = $license->getInfo();
+$rest    = $config->get();
+$temas   = ThemeManager::getTemas();
+// Verificar columna sitemap_xml
+try{
+    $colExists=false;
+    foreach($pdo->query("PRAGMA table_info(restaurante)") as $row){
+        if($row['name']=='sitemap_xml') $colExists=true;
+        if($row['name']=='seo_img_alt') $colAlt=true;
+    }
+    if(!$colExists){ $pdo->exec("ALTER TABLE restaurante ADD COLUMN sitemap_xml TEXT"); }
+    if(empty($colAlt)){ $pdo->exec("ALTER TABLE restaurante ADD COLUMN seo_img_alt TEXT"); }
+}catch(Exception $e){ /* ignore */ }
+$categoriaModel = new Categoria($pdo);
+$cats = $categoriaModel->all();
+$platoModel = new Plato($pdo);
+$platosAll = $platoModel->all();
+$platosByCat = [];
+$platosIndex = [];
+$userManager = new UserManager($pdo);
+$users = $es_admin ? $pdo->query('SELECT id, usuario, rol FROM usuarios')->fetchAll(PDO::FETCH_ASSOC) : [];
+foreach($platosAll as $p){
+    $platosByCat[$p['categoria_id']][] = $p;
+    $platosIndex[$p['id']] = $p;
+}
+
+$csrf = csrf_token(); // Generar token para AJAX
+
+/* ---------- AJAX actions for license ------------- */
+$isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+          strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_validate($isAjax);
+    $accion = $_POST['accion'] ?? '';
+    switch ($accion) {
+        case 'editar_licencia_manual':
+            if (!$es_admin) responderJSON(['ok'=>false,'msg'=>'Permiso denegado'],403);
+            $fecha   = $_POST['fecha_inicio'] ?? '';
+            $diasTot = (int)($_POST['dias_total'] ?? 0);
+            // Convertir YYYY-mm-dd a dd-mm-YYYY para License
+            if (preg_match('/^(\\d{4})-(\\d{2})-(\\d{2})$/', $fecha, $m)) {
+                $fecha = $m[3].'-'.$m[2].'-'.$m[1];
+            }
+            $ok = $license->updateManualStart($fecha, $diasTot);
+            $lic = $license->getInfo();
+            responderJSON(['ok'=>$ok,'lic'=>$lic]);
+            break;
+        case 'renovar_licencia':
+            if (!$es_admin) responderJSON(['ok'=>false,'msg'=>'Permiso denegado'],403);
+            $dias = (int)($_POST['dias'] ?? 0);
+            $ok = $license->renew($dias);
+            $lic = $license->getInfo();
+            responderJSON(['ok'=>$ok,'lic'=>$lic]);
+            break;
+
+        case 'guardar_seo':
+            // Guardar meta tags SEO
+            $seo = [
+                'meta_descripcion'=>trim($_POST['meta_descripcion'] ?? ''),
+                'meta_keywords'=>trim($_POST['meta_keywords'] ?? ''),
+                'google_analytics'=>trim($_POST['google_analytics'] ?? ''),
+                'google_search_console'=>trim($_POST['google_search_console'] ?? ''),
+                 'seo_img_alt'=>trim($_POST['seo_img_alt'] ?? '')
+            ];
+            if (isset($_FILES['seo_img']) && $_FILES['seo_img']['error'] === UPLOAD_ERR_OK) {
+                $path = procesarImagen($_FILES['seo_img'],'seo',1200);
+                if ($path) $seo['seo_img']=$path;
+            }
+            // Guardar iframe mapa SIEMPRE (permite borrar)
+            $iframe = $_POST['iframe_mapa'] ?? '';
+            $seo['iframe_mapa'] = $iframe;
+            $ok = $config->setSeo($seo);
+            responderJSON(['ok'=>$ok]);
+            break;
+        case 'guardar_tema':
+            $tema = preg_replace('/[^a-z0-9_-]/i','', $_POST['tema'] ?? '');
+            if(!ThemeManager::validarTema($tema)) responderJSON(['ok'=>false,'msg'=>'Tema inválido']);
+            $ok = $config->setTheme($tema);
+            responderJSON(['ok'=>$ok]);
+            break;
+        case 'agregar_categoria':
+            $nombre = trim($_POST['nombre'] ?? '');
+            if ($nombre==='') responderJSON(['ok'=>false,'msg'=>'Nombre vacío']);
+            $id = $categoriaModel->create($nombre);
+            responderJSON(['ok'=>true,'id'=>$id]);
+            break;
+        case 'verificar_platos_categoria':
+            $id = (int)($_POST['cat_id'] ?? 0);
+            if ($id<=0) responderJSON(['ok'=>false,'msg'=>'ID inválido']);
+            $tienePlatos = $categoriaModel->hasPlatos($id);
+            responderJSON(['ok'=>true, 'tiene_platos'=>$tienePlatos]);
+            break;
+            
+        case 'eliminar_categoria':
+            $id = (int)($_POST['cat_id'] ?? 0);
+            if ($id<=0) responderJSON(['ok'=>false,'msg'=>'ID inválido']);
+            try {
+                $categoriaModel->delete($id);
+                responderJSON(['ok'=>true]);
+            } catch (Exception $e) {
+                responderJSON(['ok'=>false, 'msg'=>$e->getMessage()]);
+            }
+            break;
+        case 'guardar_categorias':
+            $orden = $_POST['orden'] ?? '';
+            $nombresStr = $_POST['nombres'] ?? '';
+            $ids = array_map('intval', explode(',', $orden));
+            $nombres = explode('|', $nombresStr);
+            foreach ($ids as $idx=>$id){
+                $categoriaModel->update($id,$nombres[$idx] ?? '',$idx+1);
+            }
+            responderJSON(['ok'=>true]);
+            break;
+        case 'agregar_plato':
+            $catId = (int)($_POST['categoria_id'] ?? 0);
+            $nombre = trim($_POST['nombre'] ?? '');
+            $descripcion = trim($_POST['descripcion'] ?? '');
+            // normalizar precio (elim $ y .)
+            $precioRaw = $_POST['precio'] ?? '0';
+            $precio = (float) str_replace(['$', '.'], '', $precioRaw);
+            $imgPath = procesarImagen($_FILES['imagen'] ?? null,'plato',800);
+             if($imgPath){
+                 // Asegurarse de ruta relativa para guardado
+                 $imgPath = ltrim($imgPath,'/');
+             }
+            if($catId<=0||$nombre==='') responderJSON(['ok'=>false,'msg'=>'Datos']);
+            $id = $platoModel->create($catId,$nombre,$descripcion,$precio,$imgPath);
+            responderJSON(['ok'=>true,'id'=>$id]);
+            break;
+
+        case 'eliminar_plato':
+            $id = (int)($_POST['plato_id'] ?? 0);
+            if($id<=0) responderJSON(['ok'=>false]);
+            $platoModel->delete($id);
+            responderJSON(['ok'=>true]);
+            break;
+        case 'guardar_platos':
+            $ids = $_POST['plato_id'] ?? [];
+            if(!$ids){ responderJSON(['ok'=>false,'msg'=>'Sin datos']); }
+            $names = $_POST['nombre'] ?? [];
+            $descs = $_POST['descripcion'] ?? [];
+            $prices= $_POST['precio'] ?? [];
+            $ordenes = $_POST['orden_platos'] ?? [];
+            $platoMd = new Plato($pdo);
+            $datos=[];
+            foreach($ids as $i=>$pid){
+                $datos[$pid] = [
+                    'nombre'=>$names[$i] ?? '',
+                    'descripcion'=>$descs[$i] ?? '',
+                    'precio'=> (float) str_replace(['$', '.'], '', $prices[$i] ?? 0)
+                ];
+            }
+            foreach($ordenes as $cat=>$cadena){
+                $idList = array_filter(explode(',', $cadena));
+                foreach($idList as $idx=>$pid){
+                    if(!isset($datos[$pid])) continue;
+                    $old = $platoMd->find((int)$pid);
+                    $imgPath = $old['imagen'] ?? '';
+                    $platoMd->update((int)$pid,(int)$cat,$datos[$pid]['nombre'],$datos[$pid]['descripcion'],$datos[$pid]['precio'],$imgPath,$idx+1);
+                }
+            }
+            responderJSON(['ok'=>true]);
+            break;
+        case 'mover_plato':
+            $platoId = (int)($_POST['plato_id'] ?? 0);
+            $newCat  = (int)($_POST['categoria_id'] ?? 0);
+            if($platoId<=0||$newCat<=0) responderJSON(['ok'=>false,'msg'=>'Datos']);
+            // Obtener nuevo orden al final
+            $stmt = $pdo->prepare('SELECT COALESCE(MAX(orden),0)+1 AS nuevo FROM platos WHERE categoria_id = ?');
+            $stmt->execute([$newCat]);
+            $newOrden = (int)($stmt->fetchColumn() ?: 1);
+            $pdo->prepare('UPDATE platos SET categoria_id = ?, orden = ? WHERE id = ?')->execute([$newCat,$newOrden,$platoId]);
+            responderJSON(['ok'=>true]);
+            break;
+        case 'cambiar_img_plato':
+            $pid = (int)($_POST['plato_id'] ?? 0);
+            if($pid<=0 || empty($_FILES['imagen']['tmp_name'])) responderJSON(['ok'=>false, 'msg'=>'Datos']);
+            $imgPath = 'uploads/platos/'.uniqid().'.jpg';
+            if(!is_dir('uploads/platos')) mkdir('uploads/platos',0777,true);
+            move_uploaded_file($_FILES['imagen']['tmp_name'],$imgPath);
+            $p = $platoModel->find($pid);
+            if(!$p) responderJSON(['ok'=>false]);
+            $platoModel->update($pid, $p['categoria_id'], $p['nombre'], $p['descripcion'], $p['precio'], $imgPath, $p['orden']);
+            responderJSON(['ok'=>true,'path'=>$imgPath]);
+            break;
+        
+        case 'guardar_rest':
+            // Campos básicos
+            $fields = ['nombre','slogan','direccion','telefono','horario','facebook','instagram','ciudad','region','tipo_cocina','sitemap_xml','iframe_mapa'];
+            $data=[];
+            foreach($fields as $f){
+              if($f === 'iframe_mapa'){
+                // Guardar el HTML tal cual, sin escape
+                $data[$f] = isset($_POST[$f]) ? $_POST[$f] : '';
+              } else {
+                $data[$f] = trim($_POST[$f] ?? '');
+              }
+            }
+            // Procesar logo y header img
+            if(!empty($_FILES['logo']['tmp_name'])){
+                $logoPath = 'uploads/logo.png';
+                move_uploaded_file($_FILES['logo']['tmp_name'],$logoPath);
+                $data['logo'] = $logoPath;
+            }
+            if(!empty($_FILES['header_img']['tmp_name'])){
+                $hdrPath = 'uploads/header.jpg';
+                move_uploaded_file($_FILES['header_img']['tmp_name'],$hdrPath);
+                $data['fondo_header']=$hdrPath;
+            }
+            $ok = $config->update($data);
+            responderJSON(['ok'=>$ok]);
+            break;
+        case 'generar_sitemap':
+            // Generar sitemap XML simple
+            $base = rtrim($_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'],'/');
+            $urls = [
+                $base . '/',
+            ];
+            foreach($categoriaModel->all() as $c){
+                $urls[] = $base.'/categoria.php?id='.$c['id'];
+            }
+            foreach($platoModel->all() as $p){
+                $urls[] = $base.'/plato.php?id='.$p['id'];
+            }
+            $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">";
+            foreach($urls as $u){
+                $xml .= "\n  <url><loc>{$u}</loc></url>";
+            }
+            $xml .= "\n</urlset>";
+            file_put_contents(__DIR__.'/sitemap.xml',$xml);
+            $config->update(['sitemap_xml'=>'sitemap.xml']);
+            responderJSON(['ok'=>true]);
+            break;
+        case 'seo_check':
+            // Auditoría SEO básica – simula cómo un bot ve la página
+            // Generar HTML de la home directamente (sin llamada HTTP) para evitar bloqueos
+            ob_start();
+            include __DIR__ . '/index.php';
+            $html = ob_get_clean();
+            if(!$html){
+                responderJSON(['ok'=>false,'msg'=>'No se pudo generar el HTML de la home'],500);
+            }
+
+            libxml_use_internal_errors(true);
+            $dom = new DOMDocument();
+            $dom->loadHTML($html);
+            libxml_clear_errors();
+            $xp = new DOMXPath($dom);
+
+            $overall='OK';
+            $rows = [];
+            $add = function (string $el, string $state, string $detail, string $val = '') use (&$rows, &$overall) {
+                $rows[] = [$el, $state, $detail, $val];
+                if($state==='ERROR') $overall='ERROR';
+                elseif($state==='WARNING' && $overall==='OK') $overall='WARNING';
+            };
+
+            // Título
+            $tNodes = $xp->query('//title');
+            $title = $tNodes->length ? trim($tNodes->item(0)->textContent) : '';
+            if ($title === '') {
+                $add('Título', 'ERROR', 'No se encontró');
+            } else {
+                $len = mb_strlen($title);
+                $add('Título', $len > 60 ? 'WARNING' : 'OK', 'Longitud ' . $len, $title);
+            }
+
+            // Meta descripción
+            $descNode = $xp->query('//meta[@name="description"]')->item(0);
+            $desc = $descNode ? trim($descNode->getAttribute('content')) : '';
+            if ($desc === '') {
+                $add('Meta descripción', 'ERROR', 'No se encontró');
+            } else {
+                $len = mb_strlen($desc);
+                $add('Meta descripción', ($len < 80 || $len > 160) ? 'WARNING' : 'OK', 'Longitud ' . $len, $desc);
+            }
+
+            // Meta keywords
+            $kwNode = $xp->query('//meta[@name="keywords"]')->item(0);
+            $keywords = $kwNode ? trim($kwNode->getAttribute('content')) : '';
+            if($keywords===''){
+                $add('Meta keywords','WARNING','Vacío');
+            }else{
+                $kwCount = count(array_filter(array_map('trim', explode(',', $keywords))));
+                $state = ($kwCount>10)?'WARNING':'OK';
+                $add('Meta keywords',$state,$kwCount.' palabras', $keywords);
+            }
+
+            // Google Analytics
+            $gaId = '';
+            // extraer ID almacenado en BD
+            foreach($pdo->query("SELECT google_analytics FROM restaurante LIMIT 1") as $rowGa){$gaId=trim($rowGa['google_analytics']);}
+            if($gaId!==''){
+                $gaNode = $xp->query("//script[contains(text(), '$gaId')]")->item(0);
+                $add('Google Analytics', $gaNode?'OK':'ERROR', $gaNode?'Encontrado':'No encontrado', $gaId);
+            }
+            // Google Search Console
+            $gscId='';
+            foreach($pdo->query("SELECT google_search_console FROM restaurante LIMIT 1") as $rowGsc){$gscId=trim($rowGsc['google_search_console']);}
+            if($gscId!==''){
+                $gscNode=$xp->query("//meta[@name='google-site-verification' and @content='$gscId']")->item(0);
+                $add('Search Console', $gscNode?'OK':'ERROR', $gscNode?'Encontrado':'No encontrado', $gscId);
+            }
+
+            // Imagen SEO (og:image)
+            $ogImgNode = $xp->query('//meta[@property="og:image" or @name="og:image"]')->item(0);
+            $ogImg = $ogImgNode ? trim($ogImgNode->getAttribute('content')) : '';
+            if($ogImg===''){
+                $add('Imagen SEO','ERROR','og:image no encontrado');
+            }else{
+                // Comprobar alt
+                $imgAltOk=false;
+                $altText='';
+                // Revisar meta og:image:alt
+                $altMeta = $xp->query('//meta[@property="og:image:alt" or @name="og:image:alt"]')->item(0);
+                if($altMeta && trim($altMeta->getAttribute('content'))!==''){
+                    $altText=trim($altMeta->getAttribute('content'));
+                    $imgAltOk=true;
+                } else {
+                    foreach($xp->query('//img[contains(@src, "'.basename($ogImg).'")]') as $im){
+                        $alt = trim($im->getAttribute('alt'));
+                        if($alt!==''){ $altText=$alt; $imgAltOk=true; break; }
+                    }
+                }
+                $add('Imagen SEO', $imgAltOk?'OK':'WARNING', $imgAltOk?'Con alt':'Sin alt', $altText ?: $ogImg);
+            }
+
+            // Canonical
+            $canonNode = $xp->query('//link[@rel="canonical"]')->item(0);
+            if (!$canonNode) {
+                $add('Canonical', 'ERROR', 'No existe');
+            } else {
+                $add('Canonical', 'OK', 'Encontrado', $canonNode->getAttribute('href'));
+            }
+
+            // Schema.org
+            $schemaOk = false;
+            foreach ($xp->query('//script[@type="application/ld+json"]') as $scr) {
+                $json = json_decode($scr->textContent, true);
+                if (!$json || empty($json['@type'])) continue;
+                $type = is_array($json['@type']) ? implode(',', $json['@type']) : $json['@type'];
+                if (stripos($type, 'Restaurant') !== false) {
+                    $schemaOk = true;
+                    $missing = [];
+                    // Función recursiva para buscar clave
+                     $findKey=function($obj,$key) use (&$findKey){
+                         if(is_array($obj)){
+                             if(array_key_exists($key,$obj) && !empty($obj[$key])) return true;
+                             foreach($obj as $v){ if($findKey($v,$key)) return true; }
+                         }
+                         return false;
+                     };
+                     // Función para aplanar JSON y generar filas
+                     $flatten = function($obj,$prefix='') use (&$flatten,&$add){
+                         if(is_array($obj)){
+                             foreach($obj as $k=>$v){
+                                 if($k==='@type') continue;
+                                 $flatten($v, $prefix===''?$k:$prefix.'.'.$k);
+                             }
+                         }else{
+                             $val = is_bool($obj)? ($obj?'true':'false') : trim((string)$obj);
+                             $add('Schema '.$prefix, $val===''?'ERROR':'OK', $val===''?'Vacío':'Encontrado', $val);
+                         }
+                     };
+                     foreach (['telephone','servesCuisine','name','address','image'] as $req) {
+                         if(!$findKey($json,$req)) $missing[]=$req;
+                     }
+                    if ($missing) {
+                        // Resumen omitido intencionalmente
+                        $flatten($json);
+                    } else {
+                        // Resumen omitido intencionalmente
+                        $flatten($json);
+                    }
+                    break;
+                }
+            }
+            if (!$schemaOk) $add('Schema.org', 'ERROR', 'No se encontró');
+
+            // Sitemap XML
+            $sitemapFile = __DIR__ . '/sitemap.xml';
+            $siteOk = is_file($sitemapFile);
+            $add('Sitemap XML', $siteOk ? 'OK' : 'ERROR', $siteOk ? 'Accesible' : 'No accesible', $sitemapFile);
+
+            // Iframe mapa
+            $iframeOk = (bool)$xp->query('//iframe[contains(@src, "google.com/maps")]')->length;
+            $add('Iframe mapa', $iframeOk ? 'OK' : 'ERROR', $iframeOk ? 'Encontrado' : 'No encontrado');
+
+            // CSV
+            $csv = "Elemento,Estado,Detalle,Valor\n";
+            foreach ($rows as $r) {
+                $csv .= '"' . implode('","', array_map(fn($v) => str_replace('"', '""', $v), $r)) . "\n";
+            }
+            responderJSON(['ok'=>true,'rows'=>$rows,'csv'=>base64_encode($csv),'overall'=>$overall]);
+            break;
+
+        case 'guardar_footer':
+            $footer = trim($_POST['footer'] ?? '');
+            if(!$es_admin) responderJSON(['ok'=>false,'msg'=>'Permiso'],403);
+            $ok = $config->update(['footer'=>$footer]);
+            responderJSON(['ok'=>$ok]);
+            break;
+        case 'crear_usuario':
+            if(!$es_admin) responderJSON(['ok'=>false],403);
+            $username = trim($_POST['usuario'] ?? '');
+            $password = trim($_POST['clave'] ?? '');
+            $rol = $_POST['rol'] ?? 'restaurant';
+            if(!$username || !validarPassword($password)) responderJSON(['ok'=>false]);
+            $ok = $userManager->createUser($username,$password,$rol);
+            responderJSON(['ok'=>$ok]);
+            break;
+        case 'cambiar_pass':
+            if(!$es_admin) responderJSON(['ok'=>false],403);
+            $uid=(int)($_POST['uid']??0); $pass=trim($_POST['clave']??'');
+            if($uid<=0||!validarPassword($pass)) responderJSON(['ok'=>false]);
+            $ok=$userManager->changePassword($uid,'',$pass);
+            responderJSON(['ok'=>$ok]);
+            break;
+        case 'eliminar_usuario':
+            if(!$es_admin) responderJSON(['ok'=>false],403);
+            $uid=(int)($_POST['uid']??0);
+            if($uid<=0) responderJSON(['ok'=>false]);
+            $ok=$pdo->prepare('DELETE FROM usuarios WHERE id = ?')->execute([$uid]);
+            responderJSON(['ok'=>$ok]);
+            break;
+
+    }
+}
+
+
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel de Administración – <?= esc($rest['nombre'] ?? 'Restaurante') ?></title>
+    <link rel="stylesheet" href="assets/css/desktop.css?v=<?= APP_VERSION ?>">
+<script src="assets/js/notifications.js?v=<?= APP_VERSION ?>"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+<?php
+// Mensaje de feedback de otras acciones
+if(isset($_SESSION['mensaje'])){
+    $m = $_SESSION['mensaje'];
+    unset($_SESSION['mensaje']);
+    echo "NotificationSystem.show(".json_encode($m['texto']).", ".json_encode($m['tipo']??'info').");\n";
+}
+/* Avisos de licencia ahora solo banner fijo, no popups */
+if(false /* popups deshabilitados */){
+    if($lic['expired']){
+        $d = $lic['days_expired'];
+        $txt = "❌ Licencia vencida hace {$d} ".($d==1?'día':'días').". Renueve cuanto antes para evitar bloqueo total.";
+        echo "NotificationSystem.show(".json_encode($txt).", 'error');\n";
+    } else {
+        $d = $lic['days_remaining'];
+        if(in_array($d,[30,20,10])){
+            $txt = "⚠️ Su licencia vence en {$d} días. Contacte soporte para renovar (+56 9 6499 5384 / info@andesbytes.cl).";
+            echo "NotificationSystem.show(".json_encode($txt).", 'warning');\n";
+        } elseif($d<=7 && $d>0){
+            $txt = "⚠️ Su licencia vence en {$d} ".($d==1?'día':'días').". Renueve inmediatamente para evitar suspensión.";
+            echo "NotificationSystem.show(".json_encode($txt).", 'error');\n";
+        }
+    }
+}
+?>
+});
+</script>
+</head>
+<body>
+<header class="app-header">
+    <div class="brand">
+        <img src="img-app/elmenurest_logo.webp" alt="ElMenu.rest Logo">
+    </div>
+    <div class="header-info">
+        <div class="lic-status <?= $lic['expired'] ? 'error' : 'ok' ?>">
+            <?= $lic['expired'] ? 'Licencia vencida' : 'Licencia vigente · ' . $lic['days_remaining'] . ' días' ?> - <?= esc($_SESSION['usuario']) ?>
+        </div>
+    </div>
+    <div class="header-buttons">
+        <button class="view-site-btn" onclick="window.open('/', '_blank')">Ver Web</button>
+        <button class="logout-btn" onclick="location.href='logout.php'">Salir</button>
+    </div>
+</header>
+<?php
+$licBanner='';$licClass='';
+if(!$es_admin){
+    if($lic['expired']){
+        $d=$lic['days_expired'];
+        $licBanner="❌ Licencia vencida hace {$d} ".($d==1?'día':'días').". Renueve: +569 6499 5384 · info@andesbytes.cl";
+        $licClass='error';
+    } else {
+        $d=$lic['days_remaining'];
+        if(in_array($d,[30,20,10])||($d<=7 && $d>0)){
+            $licBanner="⚠️ Licencia vence en {$d} ".($d==1?'día':'días').". Renueve: +569 6499 5384 · info@andesbytes.cl";
+            $licClass=$d<=7?'error':'warn';
+        }
+    }
+}
+if($licBanner){ echo "<div class=\"lic-banner {$licClass}\">{$licBanner}</div>"; }
+?>
+<div class="app-wrapper">
+    <nav class="sidebar" role="navigation">
+        <ul>
+            <li data-section="sys">Información &amp; Licencia</li>
+            <li data-section="rest">Restaurant &amp; SEO</li>
+            <li data-section="cats">Categorías</li>
+            <li data-section="platos">Platos</li>
+            <li data-section="tema">Tema</li>
+            <?php if ($es_admin): ?>
+            <li data-section="footer">Footer</li>
+            <li data-section="users">Usuarios</li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        <section id="section-sys" class="panel-section">
+            <h2>Información del sistema &amp; licencia</h2>
+            
+            <div class="theme-toggle">
+                <span class="theme-toggle-label">Modo:</span>
+                <div class="theme-switch" onclick="toggleTheme()">
+                    <div class="theme-switch-slider"></div>
+                </div>
+            </div>
+
+            <div class="sys-grid">
+                <div>
+                    <h3>Estado de licencia</h3>
+                    <p id="lic-summary">
+                        <?php if ($lic['expired']): ?>
+                            <strong style="color:#dc2626;">Licencia vencida hace <?= $lic['days_expired'] ?> días</strong>
+                        <?php else: ?>
+                            Vigente – quedan <strong><?= $lic['days_remaining'] ?></strong> días (expira el <?= esc($lic['end_date']) ?>)
+                        <?php endif; ?>
+                    </p>
+                    <?php if(!$es_admin): ?>
+                    <p class="support-note">Para soporte o renovar su licencia contáctenos al <a href="tel:+56964995384">+569&nbsp;6499&nbsp;5384</a> o al correo <a href="mailto:info@andesbytes.cl">info@andesbytes.cl</a></p>
+                    <?php endif; ?>
+                    <?php if ($es_admin): ?>
+                    <form id="form-renovar" class="inline-form">
+                        <input type="hidden" name="accion" value="renovar_licencia">
+                        <label>Días a renovar:
+                            <input type="number" name="dias" min="1" max="365" value="30" required style="width:80px">
+                        </label>
+                        <button>Renovar</button>
+                    </form>
+                    <?php endif; ?>
+                </div>
+
+                <?php if ($es_admin): ?>
+                <div>
+                    <h3>Editar inicio &amp; duración</h3>
+                    <form id="form-manual">
+                        <input type="hidden" name="accion" value="editar_licencia_manual">
+                        <label>Fecha inicio:
+                            <input type="date" name="fecha_inicio" value="<?= ($lic['start_date']) ? date('Y-m-d', strtotime(str_replace('/', '-', $lic['start_date']))) : date('Y-m-d') ?>" required>
+                        </label>
+                        <label>Días totales:
+                            <input type="number" name="dias_total" min="1" max="730" value="<?= max(1,$lic['days_remaining']+$lic['days_expired']) ?>" required>
+                        </label>
+                        <button>Guardar</button>
+                    </form>
+                </div>
+                <?php endif; ?>
+
+                <div>
+                    <h3>Información del sistema</h3>
+                    <ul>
+                        <li>PHP: <?= PHP_VERSION ?></li>
+                        <li>Versión app: <?= APP_VERSION ?></li>
+                        <li>DB tamaño: <?= number_format(filesize(DB_FILE)/1024,0) ?> KB</li>
+                    </ul>
+                </div>
+                <?php if ($es_admin): ?>
+                <div class="backup-section">
+    <h3>Backup y restauración de base de datos</h3>
+    <div class="backup-grid">
+        <div class="backup-import">
+            <h4>Importar base de datos (.db/.sqlite):</h4>
+            <div class="backup-import-controls">
+                <form action="backup.php" method="post" enctype="multipart/form-data" class="import-form">
+                    <input type="hidden" name="accion" value="importar_db">
+                    <input type="file" name="db_file" accept=".db,.sqlite" required class="file-input">
+                    <div class="import-button-group">
+                        <button type="button" id="btn-importar-db">Importar base</button>
+                        <span class="warning-text">(¡Esto eliminará toda la información actual!)</span>
+                    </div>
+                </form>
+                <form action="backup.php" method="get" class="export-db-form">
+                    <input type="hidden" name="accion" value="exportar_db">
+                    <button type="submit">Exportar base de datos</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="backup-export">
+            <h4>Exportar datos a Excel (CSV)</h4>
+            <form action="backup.php" method="get" class="csv-form">
+                <input type="hidden" name="accion" value="exportar_csv">
+                <button type="submit">Exportar datos CSV</button>
+            </form>
+        </div>
+    </div>
+</div>
+                <?php endif; ?>
+            </div>
+        </section>
+        <section id="section-rest" class="panel-section">
+            <h2>Restaurant &amp; SEO</h2>
+            <div class="tabs-inline">
+                <button data-tab="basic" class="active">Información básica</button>
+                <button data-tab="seo">SEO</button>
+            </div>
+            <div id="tab-basic" class="tab-content active">
+                <form id="form-rest" class="admin-form" enctype="multipart/form-data">
+                    <input type="hidden" name="accion" value="guardar_rest">
+                    <div class="form-grid">
+                        <label>Nombre
+                            <input type="text" name="nombre" value="<?= esc($rest['nombre'] ?? '') ?>" required>
+                        </label>
+                        <label>Slogan
+                            <input type="text" name="slogan" value="<?= esc($rest['slogan'] ?? '') ?>">
+                        </label>
+                        <label>Dirección
+                            <input type="text" name="direccion" value="<?= esc($rest['direccion'] ?? '') ?>">
+                        </label>
+                        <label>Teléfono
+                            <input type="text" name="telefono" value="<?= esc($rest['telefono'] ?? '') ?>">
+                        </label>
+                        <label>Horario
+                            <input type="text" name="horario" value="<?= esc($rest['horario'] ?? '') ?>">
+                        </label>
+                        <label>Facebook
+                            <input type="url" name="facebook" value="<?= esc($rest['facebook'] ?? '') ?>">
+                        </label>
+                        <label>Instagram
+                            <input type="url" name="instagram" value="<?= esc($rest['instagram'] ?? '') ?>">
+                        </label>
+                        <label>Ciudad
+                            <input type="text" name="ciudad" value="<?= esc($rest['ciudad'] ?? '') ?>">
+                        </label>
+                        <label>País
+                            <input type="text" name="region" value="<?= esc($rest['region'] ?? '') ?>">
+                        </label>
+                        <label>Tipo de cocina
+                            <input type="text" name="tipo_cocina" value="<?= esc($rest['tipo_cocina'] ?? '') ?>">
+                        </label>
+                        <label>Imagen Header
+                            <input type="file" name="header_img" accept="image/*">
+                        </label>
+                        <label>Logo
+                            <input type="file" name="logo" accept="image/*">
+                        </label>
+                    </div>
+                    <button class="btn-save">Guardar cambios</button>
+                </form>
+            </div>
+            <div id="tab-seo" class="tab-content">
+                <form id="form-seo" class="admin-form" enctype="multipart/form-data">
+                    <input type="hidden" name="accion" value="guardar_seo">
+                    <div class="form-grid">
+                        <label>Meta descripción
+                            <textarea name="meta_descripcion" rows="3" maxlength="160"><?= esc($rest['meta_descripcion'] ?? '') ?></textarea>
+                        </label>
+                        <label>Meta keywords
+                            <input type="text" name="meta_keywords" value="<?= esc($rest['meta_keywords'] ?? '') ?>">
+                        </label>
+                        <label>Google Analytics ID
+                            <input type="text" name="google_analytics" value="<?= esc($rest['google_analytics'] ?? '') ?>">
+                        </label>
+                        <label>Google Search Console meta tag
+                            <input type="text" name="google_search_console" value="<?= esc($rest['google_search_console'] ?? '') ?>">
+                        </label>
+                        <label>Mapa (iframe embed)
+                             <textarea name="iframe_mapa" rows="2"><?= esc($rest['iframe_mapa'] ?? '') ?></textarea>
+                        </label>
+                        <label>Sitemap XML URL
+                             <input type="url" name="sitemap_xml" value="<?= esc($rest['sitemap_xml'] ?? '') ?>" readonly>
+                             <button type="button" id="btn-sitemap">Generar sitemap</button>
+                        </label>
+                        <label>Imagen SEO
+                            <input type="file" name="seo_img" accept="image/*">
+                        </label>
+                        <label>Texto ALT para imagen SEO
+                            <input type="text" name="seo_img_alt" value="<?= esc($rest['seo_img_alt'] ?? '') ?>">
+                        </label>
+                    </div>
+                    <button class="btn-save">Guardar SEO</button>
+                    <div class="seo-check-tools" style="margin-top:15px;">
+                        <button type="button" id="btn-seo-check" class="btn-secondary">Verificar SEO</button>
+                        <button type="button" id="btn-seo-download" class="btn-secondary" style="display:none;">Exportar CSV</button>
+                        <div id="seo-report" style="margin-top:10px;max-height:300px;overflow:auto;"></div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section id="section-cats" class="panel-section">
+            <h2>Categorías</h2>
+            <form id="form-cat-add" class="inline-form">
+                <input type="hidden" name="accion" value="agregar_categoria">
+                <input type="text" name="nombre" placeholder="Nueva categoría" required>
+                <button>Agregar</button>
+            </form>
+            <ul id="cat-list" class="cat-list">
+                <?php foreach($cats as $c): ?>
+                <li class="cat-item" draggable="true" data-id="<?= $c['id'] ?>">
+                    <span class="grab">☰</span>
+                    <input type="text" value="<?= esc($c['nombre']) ?>">
+                    <button class="del-cat" title="Eliminar">🗑</button>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+            <button id="btn-cat-save" class="btn-save">Guardar orden/nombres</button>
+        </section>
+
+        <section id="section-platos" class="panel-section">
+            <h2>Platos</h2>
+            <?php foreach($cats as $cat): $cid=$cat['id']; ?>
+            <h3><?= esc($cat['nombre']) ?></h3>
+            <form class="inline-form form-dish-add" data-cat="<?= $cid ?>" enctype="multipart/form-data">
+                <input type="hidden" name="accion" value="agregar_plato">
+                <input type="hidden" name="categoria_id" value="<?= $cid ?>">
+                <input type="text" name="nombre" placeholder="Nuevo plato" required>
+                 <input type="text" name="descripcion" placeholder="Descripción" required style="width:180px">
+                <input type="text" name="precio" placeholder="$0" pattern="\$?[0-9\.]+" required style="width:80px">
+                <input type="file" name="imagen" accept="image/*" style="width:160px">
+                <button>Agregar</button>
+            </form>
+            <?php if(empty($platosByCat[$cid])): ?>
+            <p class="cat-empty-alert" style="color:#d32f2f;font-style:italic;">Esta categoría está vacía</p>
+            <?php endif; ?>
+            <ul class="dish-list" id="dish-list-<?= $cid ?>" data-cat="<?= $cid ?>">
+                <?php foreach(($platosByCat[$cid]??[]) as $p): ?>
+                <li class="dish-item" draggable="true" data-id="<?= $p['id'] ?>">
+                    <span class="grab">☰</span>
+                    <input type="text" class="dish-name" value="<?= esc($p['nombre']) ?>">
+                    <input type="text" class="dish-desc" placeholder="Desc" value="<?= esc($p['descripcion']) ?>" style="flex:1">
+                    <img src="<?= esc($p['imagen'] ?: 'assets/placeholder.png') ?>" class="dish-thumb">
+                    <input type="text" class="dish-price" value="<?= '$'.number_format($p['precio'],0,'','.') ?>" style="width:80px">
+                    <button class="btn-img" title="Cambiar imagen">📷</button>
+                    <button class="del-dish" title="Eliminar">🗑</button>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+            <?php endforeach; ?>
+            <button id="btn-dish-save" class="btn-save">Guardar platos</button>
+        </section>
+        <section id="section-tema" class="panel-section">
+            <h2>Tema del restaurante</h2>
+            <?php $current = $rest['tema'] ?? 'chilena'; ?>
+            <form id="form-theme" class="admin-form theme-preview-grid">
+                <input type="hidden" name="accion" value="guardar_tema">
+                <div class="theme-preview-samples">
+                    <?php foreach($temas as $t): ?>
+                    <label class="tema-preview" style="background:<?= esc($t['preview_style']) ?>;">
+                        <input type="radio" name="tema" value="<?= esc($t['id']) ?>" <?= $current===$t['id']?'checked':'' ?> style="margin-bottom:6px;">
+                        <h4><?= esc($t['nombre']) ?></h4>
+                        <p><?= esc($t['descripcion']) ?></p>
+                        <div class="tema-colors">
+                            <?php foreach($t['colors'] as $color): ?>
+                                <span class="color-sample" style="background:<?= esc($color) ?>;"></span>
+                            <?php endforeach; ?>
+                        </div>
+                    </label>
+                    <?php endforeach; ?>
+                </div>
+                <button class="btn-save">Guardar tema</button>
+            </form>
+        </section>
+        <?php if ($es_admin): ?>
+        <section id="section-footer" class="panel-section">
+            <h2>Footer</h2>
+            <form id="form-footer" class="admin-form">
+                <input type="hidden" name="accion" value="guardar_footer">
+                <label>Texto del footer
+                    <textarea name="footer" rows="3" maxlength="200"><?= esc($rest['footer'] ?? '') ?></textarea>
+                </label>
+                <button class="btn-save">Guardar footer</button>
+            </form>
+        </section>
+        <section id="section-users" class="panel-section">
+            <h2>Gestión de usuarios</h2>
+            <form id="form-user-add" class="inline-form">
+                <input type="hidden" name="accion" value="crear_usuario">
+                <input type="text" name="usuario" placeholder="Usuario" required>
+                <input type="password" name="clave" placeholder="Clave (8+)" required>
+                <select name="rol">
+                    <option value="restaurant">Restaurant</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button>Crear</button>
+            </form>
+            <table class="user-table">
+                <thead><tr><th>ID</th><th>Usuario</th><th>Rol</th><th>Acciones</th></tr></thead>
+                <tbody>
+                    <?php foreach($users as $u): ?>
+                    <tr data-id="<?= $u['id'] ?>">
+                        <td><?= $u['id'] ?></td>
+                        <td><?= esc($u['usuario']) ?></td>
+                        <td><?= esc($u['rol']) ?></td>
+                        <td>
+                            <button class="btn-pass">Cambiar clave</button>
+                            <button class="btn-del"<?= ($u['id']==$_SESSION['usuario_id'])?' disabled':'' ?>>Eliminar</button>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </section>
+        <?php endif; ?>
+    </main>
+</div>
+
+<footer class="app-footer">
+    <div class="footer-content">
+        <p>&copy; <?= date('Y') ?> ElMenu.rest - Desarrollado por Andesbytes.cl - Para soporte o renovar su licencia contáctenos al +569 6499 5384 o al correo info@andesbytes.cl</p>
+    </div>
+</footer>
+
+<script>const CSRF_TOKEN = '<?= esc($csrf) ?>';</script>
+<script src="assets/js/notifications.js?v=<?= APP_VERSION ?>"></script>
+<script src="assets/js/desktop.js?v=<?= APP_VERSION ?>"></script>
+<script src="assets/js/dishes.js?v=<?= APP_VERSION ?>"></script>
+<script src="assets/js/dish-sync.js?v=<?= APP_VERSION ?>"></script>
+</body>
+</html>

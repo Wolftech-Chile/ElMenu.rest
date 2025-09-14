@@ -1,0 +1,903 @@
+[2025-09-04 06:45:09] ========================================
+[2025-09-04 06:45:09] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => eliminar_usuario
+            [uid] => 6
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php?error=Token+CSRF+inv%C3%A1lido
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-04 06:45:09] Inicio eliminar_usuario
+Data: Array
+(
+    [es_admin] => 1
+    [post_data] => Array
+        (
+            [accion] => eliminar_usuario
+            [uid] => 6
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+        )
+
+)
+
+[2025-09-04 06:45:09] Intentando eliminar usuario
+Data: Array
+(
+    [uid] => 6
+)
+
+[2025-09-04 06:45:09] Usuario eliminado correctamente
+Data: Array
+(
+    [uid] => 6
+)
+
+[2025-09-04 06:45:10] ========================================
+[2025-09-04 06:45:10] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => eliminar_usuario
+            [uid] => 6
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php?error=Token+CSRF+inv%C3%A1lido
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-04 06:45:10] Inicio eliminar_usuario
+Data: Array
+(
+    [es_admin] => 1
+    [post_data] => Array
+        (
+            [accion] => eliminar_usuario
+            [uid] => 6
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+        )
+
+)
+
+[2025-09-04 06:45:10] Error: El usuario no existe
+[2025-09-08 05:25:39] ========================================
+[2025-09-08 05:25:39] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => crear_usuario
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [usuario] => Sasha
+            [email] => sasha@sasha.cl
+            [clave] => LadyG@ga1234///
+            [rol] => restaurant
+            [respuesta1] => antofa
+            [respuesta2] => putaendi
+            [respuesta3] => popo
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:25:39] ========================================
+[2025-09-08 05:25:39] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => crear_usuario
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [usuario] => Sasha
+            [email] => sasha@sasha.cl
+            [clave] => LadyG@ga1234///
+            [rol] => restaurant
+            [respuesta1] => antofa
+            [respuesta2] => putaendi
+            [respuesta3] => popo
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:25:39] ========================================
+[2025-09-08 05:25:39] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => crear_usuario
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [usuario] => Sasha
+            [email] => sasha@sasha.cl
+            [clave] => LadyG@ga1234///
+            [rol] => restaurant
+            [respuesta1] => antofa
+            [respuesta2] => putaendi
+            [respuesta3] => popo
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:26:54] ========================================
+[2025-09-08 05:26:54] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => eliminar_usuario
+            [id] => 7
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:31:59] ========================================
+[2025-09-08 05:31:59] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => crear_usuario
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [usuario] => registro_usuario
+            [email] => registro@usuario.cl
+            [clave] => PopoCecy///1233
+            [rol] => restaurant
+            [respuesta1] => antofa
+            [respuesta2] => antofa2
+            [respuesta3] => popo
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:31:59] ========================================
+[2025-09-08 05:31:59] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => crear_usuario
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [usuario] => registro_usuario
+            [email] => registro@usuario.cl
+            [clave] => PopoCecy///1233
+            [rol] => restaurant
+            [respuesta1] => antofa
+            [respuesta2] => antofa2
+            [respuesta3] => popo
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:32:00] ========================================
+[2025-09-08 05:32:00] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => crear_usuario
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [usuario] => registro_usuario
+            [email] => registro@usuario.cl
+            [clave] => PopoCecy///1233
+            [rol] => restaurant
+            [respuesta1] => antofa
+            [respuesta2] => antofa2
+            [respuesta3] => popo
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:32:41] ========================================
+[2025-09-08 05:32:41] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => eliminar_usuario
+            [id] => 8
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:37:44] ========================================
+[2025-09-08 05:37:44] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [id] => 
+            [usuario] => popio
+            [email] => popo@cecy.cl
+            [clave] => registro_usuario.php
+            [rol] => restaurant
+            [respuesta1] => ciudad
+            [respuesta2] => ciduad
+            [respuesta3] => cecy
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:41:47] ========================================
+[2025-09-08 05:41:47] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [id] => 
+            [usuario] => cecy
+            [email] => popo@cecy.cl
+            [clave] => registro_usuario.php
+            [rol] => restaurant
+            [respuesta1] => afta
+            [respuesta2] => afta
+            [respuesta3] => afta
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:42:20] ========================================
+[2025-09-08 05:42:20] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => crear_usuario
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [usuario] => cecy
+            [email] => cecy@cecy.cl
+            [clave] => registro_usuario.php
+            [rol] => restaurant
+            [respuesta1] => afta
+            [respuesta2] => afta
+            [respuesta3] => afta
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-08 05:42:20] ========================================
+[2025-09-08 05:42:20] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => crear_usuario
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [usuario] => cecy
+            [email] => cecy@cecy.cl
+            [clave] => registro_usuario.php
+            [rol] => restaurant
+            [respuesta1] => afta
+            [respuesta2] => afta
+            [respuesta3] => afta
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:10:09] ========================================
+[2025-09-09 03:10:09] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => test
+            [email] => test@test.com
+            [clave] => Logica12345////
+            [confirmar_clave] => Logica12345////
+            [rol] => admin
+            [respuesta1] => Antofa
+            [respuesta2] => andes
+            [respuesta3] => mauri
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:10:15] ========================================
+[2025-09-09 03:10:15] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => test
+            [email] => test@test.com
+            [clave] => Logica12345////
+            [confirmar_clave] => Logica12345////
+            [rol] => admin
+            [respuesta1] => Antofa
+            [respuesta2] => andes
+            [respuesta3] => mauri
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:10:54] ========================================
+[2025-09-09 03:10:54] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Yo
+            [email] => yo@yo.com
+            [clave] => Logica12345////
+            [confirmar_clave] => Logica12345////
+            [rol] => 
+            [respuesta1] => stgo
+            [respuesta2] => andes
+            [respuesta3] => mauri
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:10:58] ========================================
+[2025-09-09 03:10:58] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Yo
+            [email] => yo@yo.com
+            [clave] => Logica12345////
+            [confirmar_clave] => Logica12345////
+            [rol] => admin
+            [respuesta1] => stgo
+            [respuesta2] => andes
+            [respuesta3] => mauri
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:11:00] ========================================
+[2025-09-09 03:11:00] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Yo
+            [email] => yo@yo.com
+            [clave] => Logica12345////
+            [confirmar_clave] => Logica12345////
+            [rol] => admin
+            [respuesta1] => stgo
+            [respuesta2] => andes
+            [respuesta3] => mauri
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:11:24] ========================================
+[2025-09-09 03:11:24] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 9
+            [usuario] => cecy
+            [email] => cecy@cecy.cl
+            [clave] => 
+            [confirmar_clave] => 
+            [rol] => admin
+            [respuesta1] => POPO
+            [respuesta2] => feo
+            [respuesta3] => hediondo
+            [accion] => editar_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:11:27] ========================================
+[2025-09-09 03:11:27] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 9
+            [usuario] => cecy
+            [email] => cecy@cecy.cl
+            [clave] => 
+            [confirmar_clave] => 
+            [rol] => admin
+            [respuesta1] => POPO
+            [respuesta2] => feo
+            [respuesta3] => hediondo
+            [accion] => editar_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:11:36] ========================================
+[2025-09-09 03:11:36] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => eliminar_usuario
+            [id] => 9
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:16:05] ========================================
+[2025-09-09 03:16:05] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:16:09] ========================================
+[2025-09-09 03:16:09] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:16:13] ========================================
+[2025-09-09 03:16:13] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:16:14] ========================================
+[2025-09-09 03:16:14] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:16:14] ========================================
+[2025-09-09 03:16:14] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:16:16] ========================================
+[2025-09-09 03:16:16] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:17:37] ========================================
+[2025-09-09 03:17:37] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:17:41] ========================================
+[2025-09-09 03:17:41] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:18:51] ========================================
+[2025-09-09 03:18:51] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 03:18:57] ========================================
+[2025-09-09 03:18:57] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [edit_id] => 
+            [usuario] => Gate
+            [email] => gate@gate.com
+            [clave] => Gate12345***
+            [confirmar_clave] => Gate12345***
+            [rol] => admin
+            [respuesta1] => nat
+            [respuesta2] => not
+            [respuesta3] => nit
+            [accion] => crear_usuario
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-09 04:04:37] ========================================
+[2025-09-09 04:04:37] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => guardar_seo
+            [meta_descripcion] => El mejor sabor italiano en tu Mesa
+            [meta_keywords] => Pizza, comida italiana
+            [google_analytics] => 
+            [google_search_console] => 
+            [iframe_mapa] => <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15948.775244755241!2d-70.61976285155417!3d-32.82361391467425!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9688059c41de4079%3A0x74768c58f7a35d87!2sPlaza%20de%20armas%20Los%20Andes!5e0!3m2!1ses!2scl!4v1757383468570!5m2!1ses!2scl" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            [sitemap_xml] => 
+            [seo_img_alt] => Don Gussito - El mejor sabor italiano en tu Mesa
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+

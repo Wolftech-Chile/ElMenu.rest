@@ -1,0 +1,1400 @@
+/* ===== Footer Base ===== */
+footer { background: #2B2B2B; color: #E0E0E0; padding: 3rem 1rem 2rem; overflow-x: hidden; }
+footer a { color: #FFFFFF; }
+
+/* ===== Footer Grid ===== */
+.footer-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 30% 25% 45%;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+.footer-mapa iframe,
+.footer-mapa .map-wrapper iframe {
+  width: 100% !important;
+  min-height: 200px;
+  border: 0;
+  border-radius: 12px;
+  display: block;
+}
+.footer-mapa .map-wrapper {
+  width: 100%;
+  padding: 0;
+  margin: 0 auto;
+}
+.footer-credits {
+  text-align: center;
+  color: #bbb;
+  margin-top: 2em;
+  font-size: 0.98em;
+}
+
+/* ===== Generic Footer Card ===== */
+.footer-card {
+  background: none;
+  border-radius: 10px;
+  padding: 0rem 1.2rem;
+}
+
+/* ===== Order Summary Card ===== */
+.pedido-card { 
+  background: #FFFFFF; 
+  border-radius: 8px; 
+  box-shadow: 0 1px 8px rgba(0,0,0,.06); 
+  padding: 1.5rem 1.2rem;
+  max-width: 320px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#pedido-resumen h4 { 
+  font-family: 'Montserrat', sans-serif; 
+  margin-bottom: .6rem; 
+  font-size: 1.05rem; 
+  color: #212121; 
+}
+
+#pedido-resumen ul { 
+  list-style: none; 
+  padding: 0; 
+  margin: .4rem 0; 
+}
+
+#pedido-resumen li { 
+  display: grid; 
+  grid-template-columns: 1fr auto; 
+  gap: .5rem; 
+  margin-bottom: .25rem; 
+  font-size: .9rem;
+}
+
+#pedido-resumen .total-row { 
+  font-weight: 700; 
+  border-top: 1px solid rgba(0,0,0,.15); 
+  padding-top: .5rem; 
+  margin-top: .4rem; 
+  display: grid; 
+  grid-template-columns: 1fr auto; 
+}
+
+#pedido-resumen .btn-limpiar { 
+  margin-top: .8rem; 
+  background: #7ac943; 
+  color: #fff !important; 
+  font-size: 1em; 
+  padding: 0.5em 1.5em; 
+  border: none; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  transition: background .2s; 
+  width: auto; 
+  min-width: 140px; 
+  max-width: 100%; 
+  display: block; 
+  margin: 0.5em auto 0 auto; 
+  text-align: center; 
+  font-family: 'Montserrat', Arial, sans-serif; 
+  font-weight: 600; 
+}
+
+#pedido-resumen .btn-limpiar:hover { 
+  background: #3e3d3d; 
+}
+
+/* ===== Restaurant Info ===== */
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  padding: 0 1.2rem;
+}
+
+.info-logo { 
+  width: 120px; 
+  height: 120px; 
+  border-radius: none; 
+  object-fit: cover; 
+  margin: 0 auto .7rem; 
+}
+@media (max-width: 600px) {
+  .info-logo {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+.footer-info h4 { 
+  font-family: 'Montserrat', sans-serif; 
+  font-size: 1.2rem; 
+  margin: .4rem 0; 
+  color: #FFFFFF;
+}
+
+.footer-info p { 
+  margin: .2rem 0; 
+  font-size: .9rem; 
+  color: #E0E0E0;
+}
+
+.info-social svg { 
+  width: 26px; 
+  height: 26px; 
+  fill: #FFFFFF; 
+  opacity: .85; 
+  margin: 0 .25rem; 
+  transition: opacity .2s; 
+}
+
+.info-social svg:hover { 
+  opacity: 1; 
+}
+
+/* ===== Map ===== */
+.footer-mapa { 
+  max-width: 320px; 
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+@media (max-width: 600px) {
+  .footer-mapa {
+    max-width: none;
+    width: 100%;
+    padding: 0;
+  }
+  .map-wrapper iframe {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    border-radius: 12px;
+  }
+}
+
+.map-wrapper { 
+  border-radius: 12px; 
+  background: #f5f5f5;
+}
+
+.map-wrapper iframe { 
+  width: 100% !important; 
+  height: 320px !important; 
+  border: 0; 
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 700px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .pedido-card,
+  .footer-mapa {
+    max-width: 100%;
+  }
+  
+  #pedido-resumen ul li { 
+    font-size: .85rem; 
+  }
+  
+  .btn-limpiar { 
+    font-size: .75rem; 
+    padding: .35rem .9rem; 
+  }
+}
+
+/* Importar fuentes desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+
+/* style-restaurants.css - Estilos para menú público y paletas visuales actualizados */
+
+/*
+========================================
+Variables CSS de paletas visuales (17+)
+========================================
+- --color1: Color principal (header, botones, fondo destacado)
+- --color2: Fondo general, tarjetas, categorías
+- --color3: Detalles, bordes, precios, hover
+- --colorText: Color de texto principal
+- --colorTextInv: Color de texto invertido
+
+Ejemplo de uso en HTML:
+<body data-theme="chilena">
+  ...
+</body>
+
+Puedes agregar nuevas paletas duplicando un bloque :root[data-theme="..."]
+y cambiando los valores de --color1, --color2, --color3.
+*/
+
+body[data-theme="italiana"] {
+  --color1: #c1121f; /* Rojo Italiano */
+  --color2: #fdf0d5; /* Crema Toscana */
+  --color3: #006400; /* Verde Oliva */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="asiatica"] {
+  --color1: #b80000; /* Rojo Imperial */
+  --color2: #111111; /* Negro */
+  --color3: #ffd700; /* Dorado */
+  --colorText: #fff;
+  --colorTextInv: #111;
+}
+body[data-theme="chilena"] {
+  --color1: #002f6c; /* Azul Marino */
+  --color2: #e8dcc2; /* Beige Tierra */
+  --color3: #d52b1e; /* Rojo Chileno */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="peruana"] {
+  --color1: #b71c1c; /* Rojo Andino */
+  --color2: #ffb300; /* Amarillo/Naranja */
+  --color3: #388e3c; /* Verde Esmeralda */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="gourmet"] {
+  --color1: #111111; /* Negro */
+  --color2: #ffffff; /* Blanco */
+  --color3: #bfa14a; /* Dorado/Cobre sutil */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="pubbar"] {
+  --color1: #111111; /* Negro */
+  --color2: #333333; /* Gris Carbón */
+  --color3: #ff6f00; /* Naranja Quemado */
+  --colorText: #fff;
+  --colorTextInv: #111;
+}
+body[data-theme="comidarapida"] {
+  --color1: #ffe600; /* Amarillo Brillante */
+  --color2: #ffffff; /* Blanco */
+  --color3: #00bcd4; /* Azul o Verde */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="pollos"] {
+  --color1: #ff9800; /* Naranja */
+  --color2: #fff3e0; /* Crema */
+  --color3: #795548; /* Marrón o Verde Oliva */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="mexicana"] {
+  --color1: #e63946; /* Rojo Intenso */
+  --color2: #43aa8b; /* Verde Vibrante */
+  --color3: #ffe600; /* Amarillo Brillante */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="mariscos"] {
+  --color1: #00b4d8; /* Azul Cielo */
+  --color2: #ffffff; /* Blanco */
+  --color3: #48cae4; /* Verde Menta o Coral */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="vegetariana"] {
+  --color1: #388e3c; /* Verde Hoja */
+  --color2: #a1887f; /* Marrón Tierra */
+  --color3: #ffd600; /* Amarillo Mostaza */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="parrillada"] {
+  --color1: #7b1f1f; /* Rojo Vino */
+  --color2: #6d4c41; /* Marrón Caoba */
+  --color3: #222222; /* Negro Carbón */
+  --colorText: #fff;
+  --colorTextInv: #fff;
+}
+body[data-theme="cafepanaderia"] {
+  --color1: #6f4e37; /* Café Mocca */
+  --color2: #f3e9dc; /* Crema Latte */
+  --color3: #a67c52; /* Marrón Avellana */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="heladeria"] {
+  --color1: #f8bbd0; /* Rosa Pastel */
+  --color2: #b3e5fc; /* Azul Celeste */
+  --color3: #fff9c4; /* Amarillo Vainilla */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="arabemediterranea"] {
+  --color1: #00bcd4; /* Azul Turquesa */
+  --color2: #ffe0b2; /* Beige Arena */
+  --color3: #8d5524; /* Marrón Dátil */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="india"] {
+  --color1: #ff9800; /* Naranja Azafrán */
+  --color2: #fff176; /* Amarillo Curry */
+  --color3: #c62828; /* Rojo Especias */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="fusion"] {
+  --color1: #757575; /* Gris Metálico */
+  --color2: #00e5ff; /* Azul Neón */
+  --color3: #4a148c; /* Púrpura Oscuro */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+
+/* Extensiones de comida rápida según país */
+body[data-theme="comidarapida_usa"] {
+  --color1: #D32F2F; /* Rojo Fast-Food USA */
+  --color2: #FFF9C4; /* Amarillo Claro */
+  --color3: #1976D2; /* Azul vibrante */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="comidarapida_cl"] {
+  --color1: #FFA000; /* Amarillo completo chileno */
+  --color2: #FFF8E1;
+  --color3: #D32F2F;
+  --colorText: #222;
+  --colorTextInv: #222;
+}
+body[data-theme="comidarapida_col"] {
+  --color1: #FDD835; /* Amarillo colombiano */
+  --color2: #FFFFFF;
+  --color3: #0288D1; /* Azul contraste */
+  --colorText: #222;
+  --colorTextInv: #222;
+}
+body[data-theme="comidarapida_ve"] {
+  --color1: #1976D2; /* Azul bandera VE */
+  --color2: #FFEE58;
+  --color3: #D32F2F;
+  --colorText: #fff;
+  --colorTextInv: #fff;
+}
+
+/* Nuevas categorías comunes */
+body[data-theme="sushi"] {
+  --color1: #90A4AE; /* Gris azulado fresco */
+  --color2: #FFFFFF;
+  --color3: #455A64;
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="cafepasteleria"] {
+  --color1: #795548; /* Marrón café */
+  --color2: #F3E9DC;
+  --color3: #A67C52;
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="cafe"] {
+  --color1: #4E342E; /* Espresso */
+  --color2: #D7CCC8;
+  --color3: #A67C52;
+  --colorText: #fff;
+  --colorTextInv: #fff;
+}
+body[data-theme="arabe"] {
+  --color1: #6A1B9A; /* Púrpura árabe */
+  --color2: #FFECB3;
+  --color3: #00897B;
+  --colorText: #fff;
+  --colorTextInv: #fff;
+}
+body[data-theme="mediterranea"] {
+  --color1: #80CBC4; /* Verde agua */
+  --color2: #FFFFFF;
+  --color3: #00695C;
+  --colorText: #222;
+  --colorTextInv: #222;
+}
+body[data-theme="exotica"] {
+  --color1: #FF4081; /* Rosa exótico */
+  --color2: #FFCDD2;
+  --color3: #7C4DFF;
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="brasilena"] {
+  --color1: #43A047; /* Verde Amazonas */
+  --color2: #FFEB3B;
+  --color3: #00897B;
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="pizzeria"] {
+  --color1: #D84315; /* Naranja horno */
+  --color2: #FFE8D9;
+  --color3: #388E3C;
+  --colorText: #fff;
+  --colorTextInv: #fff;
+}
+body[data-theme="sangucheria"] {
+  --color1: #FFB300; /* Amarillo pan */
+  --color2: #FFF8E1;
+  --color3: #6D4C41;
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+body[data-theme="alemana"] {
+  --color1: #4E6E58; /* Verde oscuro */
+  --color2: #E0F2F1;
+  --color3: #BF360C;
+  --colorText: #fff;
+  --colorTextInv: #fff;
+}
+body[data-theme="francesa"] {
+  --color1: #002395; /* Azul bandera francesa */
+  --color2: #FFFFFF; /* Blanco */
+  --color3: #ED2939; /* Rojo bandera francesa */
+  --colorText: #222;
+  --colorTextInv: #fff;
+}
+
+body {
+  background: var(--color2, #f7f7f7);
+  color: #111;
+  font-family: 'Open Sans', 'Montserrat', Arial, sans-serif;
+  margin: 0;
+  font-size: 1.05em;
+}
+header {
+  background: var(--color1, #fff);
+  color: #fff;
+  text-align: center;
+  padding: 1.5em 0 1em 0;
+  border-radius: 0 0 0px 0px;
+  box-shadow: 0 2px 8px #0001;
+  position: relative;
+  overflow: hidden;
+}
+header img {
+  border-radius: 10px;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  box-shadow: none;
+}
+header h1,
+header .rest-info,
+header .rest-info.slogan,
+header .rest-social a,
+header .rest-social a img {
+  color: #fff !important;
+  fill: #fff !important;
+}
+header .rest-social a img {
+  filter: brightness(0) invert(1);
+}
+.rest-info, .rest-social {
+  margin: 0.5em 0;
+  font-size: 1em;
+}
+.rest-social a img {
+  vertical-align: middle;
+  margin: 0 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  filter: none;
+}
+.categorias-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 10px;
+  white-space: nowrap;
+  scrollbar-width: none;
+  background: var(--color1, #eee);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-radius: 0 0 16px 16px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.categorias-scroll::-webkit-scrollbar { display: none; }
+.categoria {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  background: var(--color2, #fff);
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid var(--color3, #ccc);
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 1.2em;
+  min-width: 120px;
+  text-align: center;
+  color: #000000 !important;
+}
+
+.categoria:hover,
+.categoria:active,
+.categoria:focus {
+  color: #000000 !important;
+}
+@media (max-width: 899px) and (min-width: 701px) {
+  .platos, .platos.grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+  .plato {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    text-align: center;
+    padding: 0.7em 0.5em 1.2em 0.5em;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .plato img {
+    width: 100% !important;
+    min-width: 80px !important;
+    max-width: 320px !important;
+    height: auto !important;
+  }
+  .plato-info {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    min-width: 0;
+  }
+  .plato-info h3 {
+    font-size: 1.4em;
+    margin: 0.4em 0 0.2em 0;
+    font-weight: bold;
+    text-align: center;
+  }
+  .plato-info p {
+    font-size: 18px;
+    margin: 0 0 0.5em 0;
+    color: #444;
+    text-align: center;
+  }
+  .precio-cantidad {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7em;
+    margin-top: 0.5em;
+    padding: 0;
+    width: 100%;
+  }
+}
+@media (max-width: 700px) {
+  .platos, .platos.grid-3 { grid-template-columns: 1fr !important; }
+  .plato {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    text-align: center;
+    padding: 0.7em 0.5em 1.2em 0.5em;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .plato img {
+    width: 100% !important;
+    min-width: 80px !important;
+    max-width: 320px !important;
+    height: auto !important;
+  }
+  .plato-info {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    min-width: 0;
+  }
+  .plato-info h3 {
+    font-size: 1.4em;
+    margin: 0.4em 0 0.2em 0;
+    font-weight: bold;
+    text-align: center;
+  }
+  .plato-info p {
+    font-size: 18px;
+    margin: 0 0 0.5em 0;
+    color: #444;
+    text-align: center;
+  }
+  .precio-cantidad {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7em;
+    margin-top: 0.5em;
+    padding: 0;
+    width: 100%;
+  }
+}
+@media (min-width: 900px) {
+  .cart-bar, .pedido-bottom-sheet {
+    display: none !important;
+  }
+  .pedido-desktop {
+    display: block !important;
+  }
+}
+@media (max-width: 899px) {
+  .pedido-desktop {
+    display: none !important;
+  }
+  .cart-bar {
+    display: flex !important;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    max-width: 320px;
+    margin: 0 auto;
+    z-index: 1100;
+    background: #fff;
+    box-shadow: 0 -2px 12px #0002;
+    justify-content: center;
+    align-items: center;
+    padding: 0.7em 1.2em 0.7em 1.2em;
+    border-radius: 16px 16px 0 0;
+    gap: 0;
+  }
+  .cart-bar-btn {
+    background: var(--color1, #2196F3);
+    color: #fff !important;
+    font-size: 1.1em;
+    font-family: 'Montserrat', Arial, sans-serif;
+    border: none;
+    border-radius: 12px;
+    padding: 0.8em 1.5em;
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    box-shadow: 0 2px 8px #0001;
+    font-weight: 700;
+    width: 100%;
+    max-width: 420px;
+    justify-content: space-between;
+    transition: background 0.18s, color 0.18s;
+    text-align: center;
+  }
+  .cart-bar-btn span, .cart-bar-btn {
+    color: #fff !important;
+  }
+  .cart-bar-btn:hover {
+    background: var(--color3, #1976D2);
+    color: #fff;
+  }
+  #cart-bar-count {
+    background: var(--color3, #1976D2);
+    color: #fff;
+    border-radius: 50%;
+    padding: 0.25em 0.7em;
+    font-size: 1em;
+    font-weight: bold;
+    margin-right: 0.5em;
+  }
+  #cart-bar-total {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-left: 0.5em;
+  }
+  .pedido-bottom-sheet {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    max-width: 100vw;
+    min-height: 40vh;
+    max-height: 85vh;
+    background: #fff;
+    border-radius: 22px 22px 0 0;
+    box-shadow: 0 -6px 32px #0004;
+    z-index: 1200;
+    transform: translateY(100%);
+    transition: transform 0.33s cubic-bezier(.4,1.2,.4,1);
+    padding: 1.2em 1.2em 2.2em 1.2em;
+    overflow-y: auto;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 1.05em;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .pedido-bottom-sheet.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .pedido-bottom-sheet h4, #pedido-resumen-desktop h4, .pedido-card h4, .resumen-pedido h4 {
+  font-size: 1.6em !important;
+  font-weight: 800 !important;
+  color: #111 !important;
+  text-align: center !important;
+  margin: 0 auto 18px auto;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  max-width: 95%;
+  padding: 0;
+  display: block;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+  .pedido-bottom-sheet .bottom-sheet-header span {
+  font-size: 1.2em !important;
+  font-weight: 700 !important;
+  color: #111 !important;
+  text-align: center !important;
+  margin: 0 40px 0 0 !important;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  max-width: 95%;
+  padding: 0;
+  display: block;
+  }
+  .pedido-bottom-sheet li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.7em;
+    font-size: 1em;
+    color: #222;
+  }
+  .pedido-bottom-sheet .total-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.12em;
+    margin: 1.2em 0 1.2em 0;
+    border-top: 1px solid #eee;
+    padding-top: 0.7em;
+  }
+  .pedido-bottom-sheet .btn-limpiar {
+    background: var(--color3, #1976D2);
+    color: #fff !important;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7em 1.2em;
+    font-size: 1em;
+    font-weight: 600;
+    width: auto;
+    min-width: 140px;
+    margin: 1em auto 0.2em auto;
+    display: block;
+    text-align: center;
+    transition: background 0.18s;
+  }
+  .pedido-bottom-sheet .btn-limpiar:hover {
+    background: #222;
+    color: #fff;
+  }
+  .pedido-bottom-sheet .close-btn, #close-bottom-sheet {
+    display: block;
+    position: static;
+    margin: 25px 0 50px 70px;
+    background: var(--color1, #2196F3);
+    color: #fff !important;
+    font-size: 1em;
+    font-family: 'Montserrat', Arial, sans-serif;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5em 2em;
+    font-weight: 600;
+    text-align: center;
+    z-index: 5;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 700px) {
+  .categorias-scroll {
+    padding: 8px 2px 8px 2px;
+    gap: 4px;
+  }
+  .categoria {
+    min-width: 110px;
+    font-size: 1.225em;
+    padding: 8px 10px;
+    color: #000000 !important;
+  }
+  
+  .categoria:hover,
+  .categoria:active,
+  .categoria:focus {
+    color: #000000 !important;
+  }
+}
+.plato {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 1em;
+  background: var(--color2, #fff);
+  border-radius: 10px;
+  box-shadow: 0 1.5px 6px #0001;
+  padding: 0.8em;
+  border: 2px solid var(--color3, #eee);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.plato img {
+  width: 30%;
+  min-width: 80px;
+  max-width: 120px;
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0;
+  background: #fff;
+  border: 1px solid var(--color3, #eee);
+  align-self: center;
+}
+.plato-info {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.plato-info h3 {
+  margin: 0 0 0.2em 0;
+  font-size: 1.1em;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 700;
+  word-break: break-word;
+}
+.plato-info p {
+  margin: 0 0 0.3em 0;
+  font-size: 0.98em;
+  color: #444;
+  word-break: break-word;
+}
+
+/* ===== PRECIO-CANTIDAD: CSS ESPECÍFICO Y LIMPIO ===== */
+
+/* Desktop: Layout horizontal */
+.precio-cantidad {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  margin-top: 0.5em;
+  padding: 0.3em 0;
+  width: 100%;
+}
+
+.precio {
+  font-weight: bold;
+  color: var(--color3, #c00) !important;
+  font-size: 1.2em;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.precio-cantidad .cantidad-control {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border-radius: 12px !important;
+  padding: 4px 8px !important;
+  height: 36px !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.precio-cantidad .cantidad-btn {
+  width: 36px !important;
+  height: 30px !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  border-radius: 8px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: var(--color1, #2196F3) !important;
+  color: white !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.precio-cantidad .cantidad-btn:hover {
+  background: var(--color3, #1976D2) !important;
+  transform: scale(1.1) !important;
+}
+
+.precio-cantidad .cantidad-num {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 32px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  text-align: center !important;
+  color: #333 !important;
+  box-sizing: border-box !important;
+  vertical-align: middle !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Móvil: Layout vertical centrado */
+@media (max-width: 700px) {
+  .precio-cantidad {
+    flex-direction: column;
+    gap: 0.8em;
+    align-items: center;
+    margin-top: 0.8em;
+    padding: 0.5em 0;
+  }
+  
+  .precio {
+    font-size: 1.4em;
+    order: 1;
+  }
+  
+  .precio-cantidad .cantidad-control {
+    order: 2;
+    gap: 12px;
+    padding: 6px 12px;
+    height: 42px;
+    border-radius: 15px;
+  }
+  
+  .precio-cantidad .cantidad-btn {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 18px !important;
+  }
+  
+}
+
+.plato-info .precio-cantidad {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  margin-top: 0.5em;
+  padding: 0.3em 0;
+  width: 100%;
+}
+
+footer {
+  text-align: center;
+  color: #888;
+  margin: 2em 0 1em 0;
+  font-size: 0.98em;
+}
+/* Resumen de pedido fijo */
+.resumen-pedido {
+  position: fixed;
+  left: 5px;
+  bottom: 5px;
+  background: var(--color1, #fff);
+  color: #111;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #0002;
+  padding: 1.2em 1.5em 1.2em 1.2em;
+  min-width: 100px;
+  z-index: 100;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  border: 2px solid var(--color3, #eee);
+  align-items: flex-start;
+}
+.resumen-pedido h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  color: #111;
+  letter-spacing: 0.5px;
+}
+.resumen-pedido .btn-whatsapp {
+  background: #25d366;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7em 1.2em;
+  font-size: 1.1em;
+  font-family: 'Montserrat', Arial, sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+.resumen-pedido .btn-whatsapp:hover {
+  background: #128c7e;
+}
+.resumen-pedido .btn-limpiar {
+  background: var(--color3, #eee);
+  color: #111;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  font-family: 'Montserrat', Arial, sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.2em;
+}
+.resumen-pedido .btn-limpiar:hover {
+  background: var(--color1, #ccc);
+  color: #fff !important;
+}
+@media (max-width: 900px) {
+  .resumen-pedido { left: 8px; bottom: 8px; min-width: 180px; padding: 1em; }
+}
+@media (max-width: 700px) {
+  .resumen-pedido {
+    left: 0; right: 0; bottom: 0;
+    border-radius: 16px 16px 0 0;
+    min-width: unset;
+    width: 100vw;
+    box-shadow: 0 -2px 12px #0002;
+    padding: 1em 0.5em 1.2em 0.5em;
+    font-size: 1em;
+    align-items: stretch;
+  }
+}
+
+/* Grid de platos: 3 columnas desktop, 2 tablet, 1 móvil */
+.platos, .platos.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5em;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* TIPOGRAFÍAS Y TAMAÑOS SEGUN REQUERIMIENTO */
+header h1, header .rest-info, header .rest-info.slogan, header .rest-social a {
+  text-shadow: 0 2px 8px #000, 0 1px 2px #0008;
+}
+
+h1 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0.2em 0 0.1em 0;
+  color: #111;
+}
+h2 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  margin: 1.2em 0 0.5em 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  /* scroll-margin-top eliminado, ahora se aplica a la sección */
+}
+section[id^="cat"] {
+  scroll-margin-top: 110px;
+}
+@media (max-width: 700px) {
+  section[id^="cat"] {
+    scroll-margin-top: 90px;
+  }
+}
+h3 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0.7em 0 0.3em 0;
+}
+h4 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0.7em 0 0.3em 0;
+}
+.slogan, .rest-info.slogan {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0.5em 0 1em 0;
+}
+p, .plato-info p, .categoria-bloque p, .rest-info:not(.slogan) {
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0.2em 0 0.2em 0;
+}
+
+/* BOTONES Y CONTROLES MEJORADOS */
+button, .btn, .resumen-pedido .btn-whatsapp, .resumen-pedido .btn-limpiar {
+  border-radius: 10px !important;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 1.08em;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  padding: 0.6em 1.2em;
+  background: var(--color1, #eee);
+  color: #111 !important;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px #0001;
+  margin: 0.2em 0.2em 0.2em 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+button:hover, .btn:hover, .resumen-pedido .btn-whatsapp:hover, .resumen-pedido .btn-limpiar:hover {
+  background: var(--color3, #222);
+  color: #fff !important;
+}
+
+/* CONTROL DE CANTIDAD SUAVE */
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  background: transparent;
+  border-radius: 8px;
+  padding: 1px 4px;
+  height: 28px;
+  font-size: 15px;
+  min-width: 0;
+}
+
+/* Resumen de pedido mejorado */
+.resumen-pedido {
+  position: fixed;
+  left: 5px;
+  bottom: 5px;
+  background: var(--color1, #fff);
+  color: #111;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #0002;
+  padding: 1.2em 1.5em 1.2em 1.2em;
+  min-width: 100px;
+  z-index: 100;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  border: 2px solid var(--color3, #eee);
+  align-items: flex-start;
+}
+.resumen-pedido h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  color: #111;
+  letter-spacing: 0.5px;
+}
+@media (max-width: 900px) {
+  .resumen-pedido { left: 8px; bottom: 8px; min-width: 180px; padding: 1em; }
+}
+@media (max-width: 700px) {
+  .resumen-pedido {
+    left: 0; right: 0; bottom: 0;
+    border-radius: 16px 16px 0 0;
+    min-width: unset;
+    width: 100vw;
+    box-shadow: 0 -2px 12px #0002;
+    padding: 1em 0.5em 1.2em 0.5em;
+    font-size: 1em;
+    align-items: stretch;
+  }
+}
+
+/* CATEGORÍAS DESLIZABLES EN MÓVIL */
+.categorias-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* CONTRASTES Y ACCESIBILIDAD */
+:focus {
+  outline: 2px solid var(--color3, #888);
+  outline-offset: 2px;
+}
+::-webkit-input-placeholder { color: #aaa; }
+::-moz-placeholder { color: #aaa; }
+:-ms-input-placeholder { color: #aaa; }
+::placeholder { color: #aaa; }
+
+/* Documentación rápida:
+- Para cambiar la paleta, usa <body data-theme="nombrepaleta">
+- Puedes personalizar fuentes, colores y radios en cada bloque :root[data-theme="..."]
+- El grid de platos es de 3 columnas en desktop, 2 en tablet, 1 en móvil
+- Los botones y controles usan border-radius 10px
+- El resumen de pedido es fijo abajo a la izquierda (desktop) o abajo (móvil)
+*/
+
+/* Theme Preview Styles */
+.theme-preview-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(33, 150, 243, 0.95);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.theme-preview {
+    padding-top: 40px; /* Space for preview banner */
+}
+
+/* CSS Variable Usage Improvements */
+.plato {
+    background: var(--color2, #fff);
+    border: 2px solid var(--color3, #eee);
+}
+
+.precio {
+    color: var(--color3, #c00);
+}
+
+.categoria {
+    background: var(--color2, #fff);
+    border: 2px solid var(--color3, #ccc);
+}
+
+header {
+    background: var(--color1, #2196F3);
+}
+
+/* =============================== */
+
+/* 1. Texto general: SIEMPRE negro */
+body {
+  color: #111 !important;
+}
+
+/* 2. Botones de cantidad: fondo gris suave, texto negro */
+.cantidad-btn {
+  background: #f3f3f3 !important;
+  color: #111 !important;
+  border: 1.5px solid #ccc !important;
+}
+.cantidad-btn:hover {
+  background: #ddd !important;
+  color: #111 !important;
+}
+.cantidad-num {
+  color: #111 !important;
+  background: none !important;
+  border: none !important;
+}
+
+/* 3. Título H1 SIEMPRE blanco */
+h1 {
+  color: #fff !important;
+  text-shadow: 0 1px 6px #0002; /* Mejora la legibilidad sobre fondos claros */
+}
+
+/* 4. Slogan/rest-info slogan SIEMPRE blanco */
+.rest-info.slogan,
+.slogan {
+  color: #fff !important;
+  text-shadow: 0 1px 5px #0002;
+}
+
+/* 5. Resumen de pedido: fondo blanco y texto negro SIEMPRE */
+.resumen-pedido {
+  background: #fff !important;
+  color: #111 !important;
+  border: 2px solid #e0e0e0 !important;
+  box-shadow: 0 2px 12px #0001 !important;
+}
+.resumen-pedido h4,
+.resumen-pedido .btn-limpiar {
+  color: #111 !important;
+}
+.resumen-pedido .btn-whatsapp {
+  background: #25d366 !important;
+  color: #fff !important;
+}
+.resumen-pedido .btn-whatsapp:hover {
+  background: #128c7e !important;
+}
+
+/* Asegura que todo input en resumen de pedido sea negro */
+.resumen-pedido input,
+.resumen-pedido select,
+.resumen-pedido textarea {
+  color: #111 !important;
+  background: #fff !important;
+}
+
+/* 6. Otros: asegúrate de que info esencial nunca herede mal contraste */
+header .rest-info,
+header .rest-social a,
+header .rest-social a img {
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+/* 7. Mejoras de contraste para pequeños textos importantes en tarjetas */
+.plato-info h3,
+.plato-info .precio {
+  color: #111 !important;
+}
+
+/* ======== TEMAS 2025 (30 estilos) ======== */
+body[data-theme="italiana"]{--color1:#008C45;--color2:#F4F5F0;--color3:#CD212A;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="pizza"]{--color1:#B71C1C;--color2:#FFEB3B;--color3:#4CAF50;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="francesa"]{--color1:#002395;--color2:#FFFFFF;--color3:#ED2939;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="alemana"]{--color1:#000000;--color2:#DD0000;--color3:#FFCC00;--colorText:#fff;--colorTextInv:#fff;}
+body[data-theme="argentina"]{--color1:#74ACDF;--color2:#FFFFFF;--color3:#005AA7;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="chilena"]{--color1:#0033A0;--color2:#FFFFFF;--color3:#D52B1E;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="brasilena"]{--color1:#009C3B;--color2:#FFDF00;--color3:#002776;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="mexicana"]{--color1:#006847;--color2:#CE1126;--color3:#FFFFFF;--colorText:#fff;--colorTextInv:#222;}
+body[data-theme="colombiana"]{--color1:#FCD116;--color2:#003893;--color3:#CE1126;--colorText:#fff;--colorTextInv:#222;}
+body[data-theme="venezolana"]{--color1:#F4C300;--color2:#003DA5;--color3:#EF3340;--colorText:#fff;--colorTextInv:#fff;}
+body[data-theme="peruana"]{--color1:#D91023;--color2:#FFFFFF;--color3:#333333;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="japonesa"]{--color1:#DC143C;--color2:#FFFFFF;--color3:#1C1C1C;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="sushi"]{--color1:#0A0A0A;--color2:#F4F4F4;--color3:#D61A3C;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="tailandesa"]{--color1:#A51931;--color2:#F4F5F0;--color3:#2D2A4F;--colorText:#fff;--colorTextInv:#fff;}
+body[data-theme="hindu"]{--color1:#FF9933;--color2:#FFFFFF;--color3:#138808;--colorText:#222;--colorTextInv:#222;}
+body[data-theme="china"]{--color1:#DE2910;--color2:#FFDE00;--color3:#1A1A1A;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="asiatica"]{--color1:#B71C1C;--color2:#FBC02D;--color3:#4A148C;--colorText:#fff;--colorTextInv:#fff;}
+body[data-theme="mariscos"]{--color1:#005377;--color2:#00AEEF;--color3:#E0F7FA;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="vegetariana"]{--color1:#4CAF50;--color2:#81C784;--color3:#1B5E20;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="comidarapida_usa"]{--color1:#C8102E;--color2:#00205B;--color3:#FFFFFF;--colorText:#fff;--colorTextInv:#222;}
+body[data-theme="comidarapida_cl"]{--color1:#004B87;--color2:#F1F1F1;--color3:#C8102E;--colorText:#222;--colorTextInv:#222;}
+body[data-theme="comidarapida_col"]{--color1:#FFD700;--color2:#005BBB;--color3:#EF3340;--colorText:#222;--colorTextInv:#222;}
+body[data-theme="comidarapida_ve"]{--color1:#F4C300;--color2:#8B0000;--color3:#003DA5;--colorText:#fff;--colorTextInv:#fff;}
+body[data-theme="pollos"]{--color1:#FFA000;--color2:#D84315;--color3:#FFEB3B;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="empanadas"]{--color1:#A0522D;--color2:#FFCC80;--color3:#6D4C41;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="gourmet"]{--color1:#263238;--color2:#90A4AE;--color3:#ECEFF1;--colorText:#fff;--colorTextInv:#222;}
+body[data-theme="pubbar"]{--color1:#3E2723;--color2:#FF8F00;--color3:#212121;--colorText:#fff;--colorTextInv:#fff;}
+body[data-theme="cafepasteleria"]{--color1:#6D4C41;--color2:#FFE0B2;--color3:#D7CCC8;--colorText:#222;--colorTextInv:#fff;}
+body[data-theme="cafe"]{--color1:#4E342E;--color2:#8D6E63;--color3:#FFF3E0;--colorText:#fff;--colorTextInv:#222;}
+body[data-theme="exotica"]{--color1:#8E24AA;--color2:#F4511E;--color3:#00ACC1;--colorText:#fff;--colorTextInv:#fff;}
+body[data-theme="comidarapida"]{--color1:#C8102E;--color2:#FFDE00;--color3:#FFFFFF;--colorText:#fff;--colorTextInv:#222;}
+body[data-theme="comidarapida2"]{--color1:#FF5722;--color2:#FFC107;--color3:#FFFFFF;--colorText:#fff;--colorTextInv:#222;}
+/* ========================================= */

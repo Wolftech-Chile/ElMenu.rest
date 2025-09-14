@@ -1,0 +1,160 @@
+PENDIENTES PARA SALIR A PRODUCCION 
+Backlog priorizado para llevar ELMENU.REST a producción
+
+1° Nuevo panel de administración desktop.php (🚩prioridad máxima)
+• Crear un archivo desktop.php que reemplace a dashboard.php, manteniendo la lógica pero con:
+– Diseño responsive “desktop-first” (CSS Grid / Flex, dark-mode nativo).
+– Componentización clara (header, sidebar, main).
+– Navegación SPA ligera (fetch/AJAX) para evitar recargas completas.
+– Barra superior con estado de licencia y usuario en sesión con textos ya creados.
+– Módulos: Informacion del sistema y Licencia, Información del Restaurant y SEO, Categorías, Platos, SEO, Temas y Usuarios.
+– Inclusión de token CSRF y verificación de rol en cada endpoint AJAX.
+– Migrar JS de drag-and-drop a módulo independiente (assets/desktop.js).
+- Mejorar la función del Footer, este se muestra en el index.php y el contenido (HTML) del footer lo proporciona el admin en su panel de control (dashbord.php luego desktop.php) el usuario restaurant no ve esta función
+- Mejorar o implementar la funcion de usuarios donde el admin edita o agrega un usuario (nombre de usuario y clave 8 caracteres) esto no lo ve  ni administra el usuario restaurant
+
+• Mientras se desarrolla, mantener dashboard.php pero marcarlo como legado y proponer un nuevo CSS donde cada funcion se presente por separado en este orden
+
+Bienenido encargado de (nombre restaurant)
+
+Informacion del sistema y Licencia,
+Menu de secciones
+
+Informacion del Restaurant y SEO
+Categorias
+Platos
+Tema del restaurante
+Footer (solo admin)
+
+1.1° Crear un nuevo archivo de install que contenga todos los datos inventandos ya creados y los necesarios para comenzar con un restaurant de prueba (demo) y que cree la DB, este install me debe consultar si quiero agregar datos nuevos o utilizar los datos DEMO, debe chequear si ya existe la DB e informar, debe avisar de la DB creada y dar un mensaje de notificacion de exito o fracaso. REVISA LOS DATOS DE LAS FNUNCIONES PARA crear las tablas
+Usa estos archivos para los datos DEMO y de carga inicial si es necesario
+img/fondo-demo.jpg (imagen para el Fondo header)
+img/plato-demo.jpg (imagen para los platos)
+img/logo-demo.png (imagen para el logo)
+img/facebook.svg (logo facebook)
+img/instagram.svg (logo instagram)
+img/whatsapp.svg (logo whatsapp)
+
+1.2° Agregar la funcion de WhatsApp del restaurant con un boton flotante a la derecha abajo este campo es el de Teléfono
+
+
+2° Endurecimiento de seguridad (alta)
+a. Añadir cabeceras HTTP globales: Content-Security-Policy, X-Frame-Options, Strict-Transport-Security.
+b. Cookies de sesión: HttpOnly, Secure, SameSite=Lax.
+c. Validar content-type real de los uploads (finfo) y renombrar con UUID.
+d. Límite de tamaño configurable y revisión de imágenes en dashboard.php (DESKOPT.PHP) y api.php.
+e. Rate-limit en login.php e IP lock después de X intentos.
+f. Proteger código para que no puedan copiar el software o hackearlo
+
+3° Refactor MVC & autoload (alta)
+• Implementar autoload PSR-4 (composer.json) y namespaces (App\Core, App\Models, App\Controllers).
+• Separar vistas (Twig o PHP templates), lógica de controlador y rutas.
+• Consolidar helpers duplicados (procesar Imagen).
+
+4° Tests y calidad de código (alta)
+• Configurar PHPUnit; pruebas de modelos y helpers críticos.
+• Agregar PHPStan / Psalm nivel 6+ para detección de tipos y errores.
+• Pre-commit hook con php-cs-fixer.
+
+5° Multi-restaurante (media) OPCIONAL CONSULTAR
+• Añadir campo restaurante_id en usuarios, categorias, platos.
+• Middleware que bindea datos por restaurante logueado.
+• Adaptar consultas y License por restaurante.
+
+
+7° Performance & UX (media)
+• Habilitar compresión GZIP/Brotli y caching estático (
+.htaccess).
+• Carga diferida (loading="lazy") para todas las imágenes.
+• Bundle y minify CSS/JS (esbuild o vite).
+
+
+8° Creacion de funciones de pago que administrador activa
+Funciones de pago activables por el administrador
+(Premium – Exclusivas por activación desde panel del admin general)
+
+8.1 Backup e importación de datos
+Exportación completa:Base de datos (.sqlite o .json)
+Archivos de configuraciónImágenes (.webp)
+Generación de archivo .zip listo para descarga y restauración.
+Función de importar backup, con validación de integridad y opción de sobrescribir o duplicar.
+Ideal para migraciones, respaldo periódico o clonación de restaurantes.
+
+8.2 Menús sugeridos
+Biblioteca de menús base según:
+Estaciones del año (Verano, Invierno…)
+Fechas festivas (Fiestas Patrias, Navidad…)
+Tipo de cocina (vegano, parrilla, pastas, etc.)
+El restaurante puede cargar una plantilla como borrador editable desde el panel.
+Ideal para comenzar más rápido o reactivar menús especiales.
+
+8.3 Guardar versiones completas del menú con nombre personalizado.
+Cada presentación conserva:
+Orden y nombres de categorías
+Platos activos
+Tema visual y configuración general
+Permite cambiar manualmente o programar automáticamente por fecha (ej: Navidad, Año Nuevo).
+Muy útil para restaurantes con ciclos de temporada.
+
+8.4 Cambio de moneda y país
+Posibilidad de elegir:
+Símbolo monetario: $, €, CLP, USD, etc.
+Formato numérico: 1.000 / 1,000.00 / 1 000,00
+Localización de fecha/hora
+Adaptación automática al frontend y backend.
+Facilita uso internacional del sistema.
+
+8.5 Estadísticas y reportes
+Panel visual con:
+Platos más vistos
+Categorías más navegadas
+Clics al botón WhatsApp
+Permite seleccionar rangos de fechas
+Exportable en PDF o Excel
+Útil para entender comportamiento del cliente y ajustar el menú
+
+8.6 Código QR personalizado y descargable
+Generación automática de QR con:
+Logo del restaurante incrustado
+Colores y diseño personalizado
+Inclusión de número de mesa (opcional)
+Descarga en formatos PNG, PDF, SVG
+Ideal para impresión profesional o materiales promocionales
+
+8.7 Horarios personalizados por categoría o plato
+Definir horarios visibles para:
+Cada categoría (ej: “Desayunos” solo hasta 11:00)
+Platos individuales (ej: “Pizzas” solo en la noche)
+Permite activación/desactivación automática según hora y día
+Útil para locales con turnos, promociones por horario o delivery por secciones
+
+8.8 Noticias o blog del restaurante (100% SEO)
+Permite al restaurante o al administrador:
+Crear hasta 10 entradas tipo blog
+Editarlas con un editor visual estilo WordPress
+Subir imagen destacada, redactar título, contenido completo y extracto
+Las entradas se publican en URLs SEO-amigables, visibles para Google
+En el index.php, bajo el header, se despliega un scroll automático horizontal (loop lento) con:
+Imagen de fondo
+Título
+Extracto
+Ideal para publicar:
+Novedades, Promociones,  Eventos e Historias del restaurante
+
+
+
+9° Internacionalización & accesibilidad (baja)
+• Sistema de traducciones (i18n) con fallback a ES.
+• Validar contraste, aria-labels, navegación teclado.
+
+1O° CI/CD (baja)
+• GitHub Actions: test + build + deploy a server/FTP.
+• Backups automáticos de la BD y uploads.
+
+11° Documentación & onboarding (baja)
+• README de instalación, variables de entorno y estructura.
+• Manual corto para administradores del restaurante.
+
+12° Logs y monitoreo (baja)
+• Canalizar errores a error_log dedicado y Slack webhook.
+• Dashboard simple de métricas: visitas & pedidos.

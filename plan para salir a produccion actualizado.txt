@@ -1,0 +1,128 @@
+tiene sentido priorizar las “funciones” (features) y luego abordar los puntos no funcionales (seguridad, refactor, performance). Te propongo este plan de trabajo optimizado para que Copilot ejecute cada tarea una por una, con instrucciones precisas, archivos a tocar, y criterios de aceptación.
+
+Plan priorizando funciones (para Copilot)
+
+Usuarios: terminar CRUD completo
+Qué hace
+Crear, editar, eliminar, activar/desactivar, cambiar email, cambiar rol, cambiar contraseña.
+Archivos a tocar
+backend: desktop.php (switch de acciones POST), includes/helpers.php (validadores), includes/user_manager.php (si existe y conviene centralizar).
+frontend: assets/js/desktop.js (listeners AJAX y notificaciones), sección HTML #section-users en desktop.php.
+Instrucciones para Copilot
+En desktop.php, dentro del switch de acciones POST, agregar/ajustar:
+crear_usuario: validar campos, email único (no permitir NULL), hash de contraseña, CSRF, JSON {ok, message, userId}.
+editar_usuario: admite cambiar usuario, email, rol, respuestas de seguridad; validar unicidad email/usuario; JSON {ok, message}.
+cambiar_pass: validar min 8 chars; JSON {ok, message}.
+eliminar_usuario: impedir autoeliminación del usuario en sesión; JSON {ok, message}.
+cambiar_estado: alternar activo 0/1, impedir desactivar propio usuario; JSON {ok, message, activo}.
+cambiar_email y cambiar_rol: si lo manejas por acciones independientes; JSON {ok, message}.
+En assets/js/desktop.js:
+Extender setupUserForms(): capturar formularios o botones de editar/eliminar/cambiar estado, enviar con fetch('desktop.php', { method:'POST', body:FormData, headers: {'X-Requested-With': 'XMLHttpRequest'} }).
+Reutilizar NotificationSystem.show() o showNotification() para feedback.
+Tras éxito, refrescar la lista de usuarios (recarga o redibujo).
+En desktop.php > #section-users:
+Agregar formularios/acciones mínimas (editar inline o modal sencillo con inputs usuario/email/rol y botones Guardar/Eliminar/Activar/Desactivar/Cambiar clave).
+Validaciones
+Email requerido y único.
+Usuario requerido y único.
+Password min 8; mostrar mensaje claro.
+Criterios de aceptación
+Se puede crear, editar, activar/desactivar, eliminar, cambiar email/rol/contraseña desde la UI con mensajes claros y CSRF válido.
+Instalador con DEMO (install.php)
+Qué hace
+Wizard que permite instalar en limpio o con datos DEMO, verifica si existe DB, crea tablas, copia imágenes demo y siembra datos base.
+Archivos a tocar
+install.php (nuevo o reescrito), includes/schema_restaurant.php (si ya existe, consolidar creación de tablas), includes/helpers.php (helpers comunes), models/* para seeds.
+Instrucciones para Copilot
+En install.php:
+Paso 1: detectar 
+restaurante.db
+; si existe, ofrecer backup y reinstalación o salir.
+Paso 2: seleccionar “Instalación limpia” o “Cargar DEMO”.
+Paso 3: crear tablas (usar funciones centralizadas), crear admin inicial (usuario admin + pass temporal), setear configuración del restaurante.
+Paso 4 (DEMO): cargar imágenes demo y asociarlas:
+img/fondo-demo.jpg (header)
+img/plato-demo.jpg (platos)
+img/logo-demo.png (logo)
+img/facebook.svg, img/instagram.svg, img/whatsapp.svg (redes)
+Final: imprimir resumen, credenciales admin y estado (OK/ERROR).
+Criterios de aceptación
+Demostración y limpio funcionan.
+Mensajes claros si la DB ya existe o si hay errores.
+IA para descripciones de platos
+Qué hace
+Botón que genera sugerencia de descripción para un plato usando API externa configurable.
+Archivos a tocar
+frontend: assets/js/dishes.js (añadir botón “Generar descripción” y llamar endpoint).
+backend: includes/api.php (o endpoint nuevo) — POST /ai/generar_descripcion con nombre/ingredientes/categoría.
+config.php: variable para API_KEY (no hardcodear en git).
+Instrucciones para Copilot
+Añadir un botón junto al campo descripción. Al hacer clic, disable botón, llamar endpoint; al recibir texto, rellenar textarea y mostrar notificación.
+Backend: validar inputs, capturar errores, responder JSON {ok, description|error}.
+Criterios de aceptación
+Funciona sin romper el flujo; si falla, feedback claro.
+Personalización de temas (colores)
+Qué hace
+Permite definir colores primario/secundario/fondo/acentos con CSS variables. Persistir en DB y aplicar en panel y web pública.
+Archivos a tocar
+backend: models/Config.php (guardar), desktop.php (UI sección Tema), includes/helpers.php (escapes).
+frontend: assets/css/desktop.css y assets/css/style-restaurants.css (variables :root).
+Instrucciones para Copilot
+En desktop.php > sección Tema: inputs color y botón Guardar.
+Guardar en DB y al cargar, inyectar variables CSS en o body data-attrs.
+Criterios de aceptación
+Persistencia, contraste legible, cambios visibles sin recargar excesivo.
+Mejorar Footer y Mapa
+Qué hace
+Footer personalizable; mapa iframe habilitado con sanitización y sandbox.
+Archivos a tocar
+backend: desktop.php (sección Restaurant & SEO), models/Config.php.
+frontend: vistas públicas (index.php) para renderizar footer y mapa.
+Instrucciones para Copilot
+Asegurar que el campo iframe_mapa se guarda y se imprime con atributos seguros: sandbox, referrerpolicy, allowfullscreen limitado y filtro de origen (opcional).
+Criterios de aceptación
+Footer editable desde panel; mapa visible y sanitizado.
+Mejoras de Licencia (funcional)
+Qué hace
+Centralizar enforcement en core/License.php. Banners, avisos y si expira, bloquear acciones críticas (excepto renovar).
+Archivos a tocar
+core/License.php, desktop.php (UI banners), assets/js/desktop.js (avisos).
+Instrucciones para Copilot
+Exponer un método License::mustBlock() y usarlo antes de acciones sensibles (crear/editar contenidos).
+Criterios de aceptación
+Avisos y bloqueo funcionan según días restantes/expirada.
+Luego de las funciones: no funcionales (endurecimiento, refactor, tests, performance)
+
+Hardening base
+Headers de seguridad globales en config.php (aplicables a todas las respuestas).
+Cookies de sesión seguras en core/Auth.php (HttpOnly, Secure, SameSite=Lax; rotar al login).
+Subida de imágenes: finfo + límites de tamaño + UUID + uploads/.htaccess bloqueando PHP.
+Rate limit en login.php: incrementar intentos_fallidos, setear bloqueado_hasta, feedback claro.
+Proteger endpoints sensibles (backup/install/debug/update): solo admin + CSRF + confirmación + preferible ocultar en prod.
+Criterios de aceptación: ver cabeceras en respuestas, bloqueo de ejecución en /uploads/, lockout tras X intentos.
+Limpieza: duplicados y obsoletos
+Unificar helpers (normalizar_respuesta, procesarImagen).
+Retirar bkp o legacy no usados del flujo (o mover a /tools).
+Criterios: menos duplicación, funciones reutilizadas.
+Refactor MVC-lite + autoload
+composer.json con PSR-4 (App\Core, App\Models, App\Controllers).
+Separar router de acciones del render en desktop.php a controladores simples.
+Mantener UI intacta.
+Criterios: compila autoload, rutas básicas funcionan.
+Tests, calidad y performance
+PHPUnit para models/helpers.
+PHPStan/Psalm nivel 6+.
+php-cs-fixer y pre-commit.
+.htaccess con compresión y cache; lazyload en imágenes; minify/bundle CSS/JS opcional con esbuild/vite.
+Criterios: tests ejecutan, análisis estático limpio, carga más rápida en frontend.
+Notas importantes para Copilot (contexto y convenciones)
+
+CSRF: usa las funciones existentes csrf_token() y csrf_validate() y agrega <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>"> en TODOS los formularios.
+Respuestas JSON: siempre devolver { ok: bool, message: string, ... } con códigos HTTP apropiados (400 validación, 403 permiso, 500 error interno).
+Validación email: exigir email no vacío y único; si el esquema permite NULL, en backend rechaza vacío para garantizar unicidad real.
+Seguridad de uploads: siempre usa finfo para MIME real, limita tamaños, renombra a UUID, guarda fuera del webroot si es posible, y añade 
+.htaccess
+ para deshabilitar ejecución.
+Logs: no guardes contraseñas en logs; si logueas post_data, enmascara clave.
+UX notificaciones: centralizar con NotificationSystem.show o el sistema de notificaciones que ya existe en assets/js/notifications.js.
+Estándar de commit: “feat(users): editar_usuario con validaciones y CSRF” o “fix(security): add CSP & session cookie flags”.
