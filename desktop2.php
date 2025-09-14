@@ -1156,6 +1156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Panel de Administración – <?= esc($rest['nombre'] ?? 'Restaurante') ?></title>
     <link rel="stylesheet" href="assets/css/desktop.css?v=<?= APP_VERSION ?>">
 <script src="assets/js/notifications.js?v=<?= APP_VERSION ?>"></script>
+<script src="assets/js/desktop.js?v=<?= APP_VERSION ?>"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 <?php
@@ -1220,21 +1221,21 @@ if($licBanner){ echo "<div class=\"lic-banner {$licClass}\">{$licBanner}</div>";
 ?>
 <div class="app-wrapper">
     <nav class="sidebar" role="navigation">
-        <ul>
-            <li data-section="sys">Información &amp; Licencia</li>
-            <li data-section="rest">Restaurant &amp; SEO</li>
-            <li data-section="cats">Categorías</li>
-            <li data-section="platos">Platos</li>
-            <li data-section="tema">Tema</li>
-            <?php if ($es_admin): ?>
-            <li data-section="footer">Footer</li>
-            <li data-section="users">Usuarios</li>
-            <?php endif; ?>
-        </ul>
-    </nav>
+    <ul>
+        <li data-section="sys"><span>Información &amp; Licencia</span></li>
+        <li data-section="rest"><span>Restaurant &amp; SEO</span></li>
+        <li data-section="cats"><span>Categorías</span></li>
+        <li data-section="platos"><span>Platos</span></li>
+        <li data-section="tema"><span>Tema</span></li>
+        <?php if ($es_admin): ?>
+        <li data-section="footer"><span>Footer</span></li>
+        <li data-section="users"><span>Usuarios</span></li>
+        <?php endif; ?>
+    </ul>
+</nav>
 
     <main id="main-content">
-        <section id="section-sys" class="panel-section">
+        <section id="section-sys" class="panel-section active">
             <h2>Información del sistema &amp; licencia</h2>
             
             <div class="theme-toggle">

@@ -1261,7 +1261,7 @@ if($licBanner){ echo "<div class=\"lic-banner {$licClass}\">{$licBanner}</div>";
                     <form id="form-renovar" class="inline-form">
                         <input type="hidden" name="accion" value="renovar_licencia">
                         <label>Días a renovar:
-                            <input type="number" name="dias" min="1" max="365" value="30" required style="width:80px">
+                            <input type="number" name="dias" min="1" max="365" value="30" required >
                         </label>
                         <button>Renovar</button>
                     </form>
@@ -1407,9 +1407,9 @@ if($licBanner){ echo "<div class=\"lic-banner {$licClass}\">{$licBanner}</div>";
                         </label>
                     </div>
                     <button class="btn-save">Guardar SEO</button>
-                    <div class="seo-check-tools" style="margin-top:15px;">
+                    <div class="seo-check-tools" >
                         <button type="button" id="btn-seo-check" class="btn-secondary">Verificar SEO</button>
-                        <button type="button" id="btn-seo-download" class="btn-secondary" style="display:none;">Exportar CSV</button>
+                        <button type="button" id="btn-seo-download" class="btn-secondary" >Exportar CSV</button>
                         <div id="seo-report" style="margin-top:10px;max-height:300px;overflow:auto;"></div>
                     </div>
                 </form>
@@ -1442,22 +1442,22 @@ if($licBanner){ echo "<div class=\"lic-banner {$licClass}\">{$licBanner}</div>";
                 <input type="hidden" name="accion" value="agregar_plato">
                 <input type="hidden" name="categoria_id" value="<?= $cid ?>">
                 <input type="text" name="nombre" placeholder="Nuevo plato" required>
-                 <input type="text" name="descripcion" placeholder="Descripción" required style="width:180px">
-                <input type="text" name="precio" placeholder="$0" pattern="\$?[0-9\.]+" required style="width:80px">
-                <input type="file" name="imagen" accept="image/*" style="width:160px">
+                 <input type="text" name="descripcion" placeholder="Descripción" required >
+                <input type="text" name="precio" placeholder="$0" pattern="\$?[0-9\.]+" required >
+                <input type="file" name="imagen" accept="image/*" >
                 <button>Agregar</button>
             </form>
             <?php if(empty($platosByCat[$cid])): ?>
-            <p class="cat-empty-alert" style="color:#d32f2f;font-style:italic;">Esta categoría está vacía</p>
+            <p class="cat-empty-alert" class="cat-empty-alert">Esta categoría está vacía</p>
             <?php endif; ?>
             <ul class="dish-list" id="dish-list-<?= $cid ?>" data-cat="<?= $cid ?>">
                 <?php foreach(($platosByCat[$cid]??[]) as $p): ?>
                 <li class="dish-item" draggable="true" data-id="<?= $p['id'] ?>">
                     <span class="grab">☰</span>
                     <input type="text" class="dish-name" value="<?= esc($p['nombre']) ?>">
-                    <input type="text" class="dish-desc" placeholder="Desc" value="<?= esc($p['descripcion']) ?>" style="flex:1">
+                    <input type="text" class="dish-desc" placeholder="Desc" value="<?= esc($p['descripcion']) ?>" >
                     <img src="<?= esc($p['imagen'] ?: 'assets/placeholder.png') ?>" class="dish-thumb">
-                    <input type="text" class="dish-price" value="<?= '$'.number_format($p['precio'],0,'','.') ?>" style="width:80px">
+                    <input type="text" class="dish-price" value="<?= '$'.number_format($p['precio'],0,'','.') ?>" >
                     <button class="btn-img" title="Cambiar imagen">📷</button>
                     <button class="del-dish" title="Eliminar">🗑</button>
                 </li>
@@ -1516,49 +1516,40 @@ if($licBanner){ echo "<div class=\"lic-banner {$licClass}\">{$licBanner}</div>";
                 echo '<td>' . htmlspecialchars($u['rol']) . '</td>';
                 echo '<td>';
                 echo '<button onclick="editarUsuario(' . $u['id'] . ', \'' . htmlspecialchars($u['usuario']) . '\', \'' . htmlspecialchars($u['email']) . '\', \'' . htmlspecialchars($u['rol']) . '\')" class="btn-edit">Editar</button>';
-                echo '<button onclick="eliminarUsuario(' . $u['id'] . ')" class="btn-delete" style="margin-left:5px;">Eliminar</button>';
+                echo '<button onclick="eliminarUsuario(' . $u['id'] . ')" class="btn-delete" >Eliminar</button>';
                 echo '</td>';
                 echo '</tr>';
             }
             echo '</tbody></table>';
             ?>
             
-            <form id="form-usuario" class="formulario-registro" novalidate>
+            <form id="form-usuario" class="formulario" method="post" action="includes/registro_usuario.php" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
                 <input type="hidden" name="edit_id" id="edit_id" value="">
-                
-                <div class="formulario-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
+                <div class="formulario-grid">
                     <div>
                         <div class="grupo-formulario">
                             <label for="usuario">Nombre de Usuario *</label>
                             <input type="text" id="usuario" name="usuario" required>
                         </div>
-                        
                         <div class="grupo-formulario">
                             <label for="email">Correo Electrónico *</label>
                             <input type="email" id="email" name="email" required>
                         </div>
-                        
                         <div class="grupo-formulario">
                             <label for="clave">Contraseña *</label>
-                            <div class="contrasena-con-ojito">
-                                <input type="password" id="clave" name="clave" autocomplete="new-password">
-                                <button type="button" class="ojito" onclick="mostrarOcultarContrasena('clave')">
-                                    <i class="far fa-eye"></i>
-                                </button>
+                            <div class="password-wrapper">
+                                <input type="password" id="clave" name="clave" required autocomplete="new-password">
+                                <button type="button" class="toggle-password" onclick="mostrarOcultarContrasena('clave', this)"><i class="far fa-eye"></i></button>
                             </div>
                         </div>
-                        
                         <div class="grupo-formulario">
                             <label for="confirmar_clave">Confirmar Contraseña *</label>
-                            <div class="contrasena-con-ojito">
-                                <input type="password" id="confirmar_clave" name="confirmar_clave" autocomplete="new-password">
-                                <button type="button" class="ojito" onclick="mostrarOcultarContrasena('confirmar_clave')">
-                                    <i class="far fa-eye"></i>
-                                </button>
+                            <div class="password-wrapper">
+                                <input type="password" id="confirmar_clave" name="confirmar_clave" required autocomplete="new-password">
+                                <button type="button" class="toggle-password" onclick="mostrarOcultarContrasena('confirmar_clave', this)"><i class="far fa-eye"></i></button>
                             </div>
                         </div>
-                        
                         <div class="grupo-formulario">
                             <label for="rol">Rol *</label>
                             <select id="rol" name="rol" required>
@@ -1568,23 +1559,19 @@ if($licBanner){ echo "<div class=\"lic-banner {$licClass}\">{$licBanner}</div>";
                             </select>
                         </div>
                     </div>
-                    
                     <div>
                         <div class="grupo-formulario">
                             <label for="respuesta1">¿Cuál es tu ciudad de nacimiento? *</label>
                             <input type="text" id="respuesta1" name="respuesta1" required>
                         </div>
-                        
                         <div class="grupo-formulario">
                             <label for="respuesta2">¿En qué comuna vives actualmente? *</label>
                             <input type="text" id="respuesta2" name="respuesta2" required>
                         </div>
-                        
                         <div class="grupo-formulario">
                             <label for="respuesta3">¿Cuál es el nombre de tu mejor amigo/a de la infancia? *</label>
                             <input type="text" id="respuesta3" name="respuesta3" required>
                         </div>
-                        
                         <div class="grupo-formulario" style="margin-top: 30px;">
                             <button type="submit" id="btn-guardar-usuario" class="btn-save">
                                 <i class="fas fa-user-plus"></i> Registrar Usuario
@@ -1594,6 +1581,138 @@ if($licBanner){ echo "<div class=\"lic-banner {$licClass}\">{$licBanner}</div>";
                     </div>
                 </div>
             </form>
+            
+            <script>
+                function mostrarOcultarContrasena(idInput) {
+                    const input = document.getElementById(idInput);
+                    const icono = event.currentTarget.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icono.classList.remove('fa-eye');
+                        icono.classList.add('fa-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        icono.classList.remove('fa-eye-slash');
+                        icono.classList.add('fa-eye');
+                    }
+                }
+                
+                function editarUsuario(id, usuario, email, rol) {
+                    document.getElementById('edit_id').value = id;
+                    document.getElementById('usuario').value = usuario;
+                    document.getElementById('usuario').readOnly = true;
+                    document.getElementById('usuario').style.background = '#eee';
+                    document.getElementById('usuario').style.color = '#888';
+                    document.getElementById('email').value = email;
+                    document.getElementById('rol').value = rol;
+                    document.getElementById('clave').value = '';
+                    document.getElementById('confirmar_clave').value = '';
+                    document.getElementById('respuesta1').value = '';
+                    document.getElementById('respuesta2').value = '';
+                    document.getElementById('respuesta3').value = '';
+                    document.getElementById('btn-guardar-usuario').innerHTML = '<i class="fas fa-save"></i> Guardar cambios';
+                    document.getElementById('btn-cancelar').style.display = 'inline-block';
+                    document.getElementById('form-usuario').setAttribute('novalidate', '');
+                }
+                
+                function eliminarUsuario(id) {
+                    if (confirm('¿Seguro que desea eliminar este usuario?')) {
+                        const fd = new FormData();
+                        fd.append('accion', 'eliminar_usuario');
+                        fd.append('id', id);
+                        fd.append('csrf_token', CSRF_TOKEN);
+                        
+                        fetch('desktop.php', {
+                            method: 'POST',
+                            body: fd,
+                            headers: {'X-Requested-With': 'XMLHttpRequest'}
+                        })
+                        .then(r => r.json())
+                        .then(data => {
+                            mostrarMensajeUsuario(data.ok ? 'Usuario eliminado' : (data.error || data.message), data.ok ? 'success' : 'error');
+                            if (data.ok) location.reload();
+                        });
+                    }
+                }
+                
+                function cancelarEdicion() {
+                    document.getElementById('form-usuario').reset();
+                    document.getElementById('edit_id').value = '';
+                    document.getElementById('usuario').readOnly = false;
+                    document.getElementById('usuario').style.background = '';
+                    document.getElementById('usuario').style.color = '';
+                    document.getElementById('btn-guardar-usuario').innerHTML = '<i class="fas fa-user-plus"></i> Registrar Usuario';
+                    document.getElementById('btn-cancelar').style.display = 'none';
+                }
+                
+                function mostrarMensajeUsuario(msg, tipo) {
+                    const mensajes = document.getElementById('usuarios-mensajes');
+                    mensajes.innerHTML = `<div class="mensaje ${tipo}">${msg}</div>`;
+                    setTimeout(() => { mensajes.innerHTML = ''; }, 4000);
+                }
+                
+                // Event listeners
+                document.addEventListener('DOMContentLoaded', function() {
+                    const formUsuario = document.getElementById('form-usuario');
+                    const btnCancelar = document.getElementById('btn-cancelar');
+                    
+                    if (formUsuario) {
+                        formUsuario.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            
+                            const clave = document.getElementById('clave').value;
+                            const confirmarClave = document.getElementById('confirmar_clave').value;
+                            const esEdicion = document.getElementById('edit_id').value !== '';
+                            
+                            // Solo validar si se quiere cambiar la clave o es registro nuevo
+                            if (!esEdicion || clave !== '' || confirmarClave !== '') {
+                                if (clave !== confirmarClave) {
+                                    mostrarMensajeUsuario('Las contraseñas no coinciden', 'error');
+                                    return false;
+                                }
+                                
+                                if (clave !== '' && clave.length < 8) {
+                                    mostrarMensajeUsuario('La contraseña debe tener al menos 8 caracteres', 'error');
+                                    return false;
+                                }
+                            }
+                            
+                            const fd = new FormData(formUsuario);
+                            fd.append('accion', esEdicion ? 'editar_usuario' : 'crear_usuario');
+                            
+                            fetch('includes/registro_usuario.php', {
+                                method: 'POST',
+                                body: fd,
+                                headers: {'X-Requested-With': 'XMLHttpRequest'}
+                            })
+                            .then(r => {
+                                console.log('Response status:', r.status);
+                                return r.text();
+                            })
+                            .then(text => {
+                                console.log('Response text:', text);
+                                try {
+                                    const data = JSON.parse(text);
+                                    NotificationSystem.show(data.ok ? (esEdicion ? 'Usuario actualizado' : 'Usuario creado') : (data.error || data.message), data.ok ? 'success' : 'error');
+                                    if (data.ok) location.reload();
+                                } catch (e) {
+                                    console.error('JSON parse error:', e);
+                                    NotificationSystem.show('Error del servidor: ' + text.substring(0, 200), 'error');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Network error:', error);
+                                NotificationSystem.show('Error de conexión: ' + error.message, 'error');
+                            });
+                        });
+                    }
+                    
+                    if (btnCancelar) {
+                        btnCancelar.addEventListener('click', cancelarEdicion);
+                    }
+                });
+            </script>
         </section>
         <?php endif; ?>
     </main>
@@ -1621,16 +1740,6 @@ function togglePassword(span){
         span.textContent='👁️';
     }
 }
-
-// Funciones para gestión de usuarios
-function mostrarOcultarContrasena(idInput) {
-    const input = document.getElementById(idInput);
-    const icono = event.currentTarget.querySelector('i');
-    
-    if (input.type === 'password') {
-        input.type = 'text';
-        icono.classList.remove('fa-eye');
-        icono.classList.add('fa-eye-slash');
     } else {
         input.type = 'password';
         icono.classList.remove('fa-eye-slash');
@@ -1684,12 +1793,11 @@ function cancelarEdicion() {
     document.getElementById('usuario').style.color = '';
     document.getElementById('btn-guardar-usuario').innerHTML = '<i class="fas fa-user-plus"></i> Registrar Usuario';
     document.getElementById('btn-cancelar').style.display = 'none';
-    document.getElementById('form-usuario').removeAttribute('novalidate');
 }
 
 function mostrarMensajeUsuario(msg, tipo) {
     const mensajes = document.getElementById('usuarios-mensajes');
-    mensajes.innerHTML = `<div class="mensaje ${tipo}" style="padding:10px;margin:10px 0;border-radius:5px;${tipo === 'success' ? 'background:#e8f9f0;color:#2ecc71;' : 'background:#fde8e8;color:#e74c3c;'}">${msg}</div>`;
+    mensajes.innerHTML = `<div class="mensaje ${tipo}">${msg}</div>`;
     setTimeout(() => { mensajes.innerHTML = ''; }, 4000);
 }
 
