@@ -1511,42 +1511,27 @@ if($licBanner){ echo "<div class=\"lic-banner {$licClass}\">{$licBanner}</div>";
         <section id="section-users" class="panel-section">
             <h2>Gestión de usuarios</h2>
             <div id="usuarios-mensajes"></div>
-<?php
-$usuarios = $pdo->query('SELECT * FROM usuarios ORDER BY id DESC')->fetchAll(PDO::FETCH_ASSOC);
-echo '<div class="user-list-desktop">';
-echo '<table style="width:100%;margin-bottom:2em;"><thead><tr><th>ID</th><th>Usuario</th><th>Email</th><th>Rol</th><th>Acciones</th></tr></thead><tbody>';
-foreach ($usuarios as $u) {
-    echo '<tr>';
-    echo '<td>' . $u['id'] . '</td>';
-    echo '<td>' . htmlspecialchars($u['usuario']) . '</td>';
-    echo '<td>' . htmlspecialchars($u['email']) . '</td>';
-    echo '<td>' . htmlspecialchars($u['rol']) . '</td>';
-    echo '<td>';
-    echo '<button class="btn btn-edit" data-id="' . $u['id'] . '">Editar</button> ';
-    echo '<button class="btn btn-delete" data-id="' . $u['id'] . '">Eliminar</button>';
-    echo '</td>';
-    echo '</tr>';
-}
-echo '</tbody></table>';
-echo '</div>';
-
-// Mobile cards
-
-echo '<div class="user-list-mobile">';
-foreach ($usuarios as $u) {
-    echo '<div class="user-card">';
-    echo '<div class="user-field"><span class="user-label">Usuario:</span> ' . htmlspecialchars($u['usuario']) . '</div>';
-    echo '<div class="user-field"><span class="user-label">Email:</span> ' . htmlspecialchars($u['email']) . '</div>';
-    echo '<div class="user-field"><span class="user-label">Rol:</span> ' . htmlspecialchars($u['rol']) . '</div>';
-    echo '<div class="user-actions">';
-    echo '<button class="btn btn-edit" data-id="' . $u['id'] . '">Editar</button> ';
-    echo '<button class="btn btn-delete" data-id="' . $u['id'] . '">Eliminar</button>';
-    echo '</div>';
-    echo '</div>';
-}
-echo '</div>';
-?>
-<form id="form-usuario" class="formulario" method="post" action="includes/registro_usuario.php" enctype="multipart/form-data">
+            
+            <?php
+            // Mostrar tabla de usuarios solo si es admin
+            $usuarios = $pdo->query('SELECT * FROM usuarios ORDER BY id DESC')->fetchAll(PDO::FETCH_ASSOC);
+            echo '<table style="width:100%;margin-bottom:2em;"><thead><tr><th>ID</th><th>Usuario</th><th>Email</th><th>Rol</th><th>Acciones</th></tr></thead><tbody>';
+            foreach ($usuarios as $u) {
+                echo '<tr>';
+                echo '<td>' . $u['id'] . '</td>';
+                echo '<td>' . htmlspecialchars($u['usuario']) . '</td>';
+                echo '<td>' . htmlspecialchars($u['email']) . '</td>';
+                echo '<td>' . htmlspecialchars($u['rol']) . '</td>';
+                echo '<td>';
+                echo '<button onclick="editarUsuario(' . $u['id'] . ', \'' . htmlspecialchars($u['usuario']) . '\', \'' . htmlspecialchars($u['email']) . '\', \'' . htmlspecialchars($u['rol']) . '\')" class="btn-edit">Editar</button>';
+                echo '<button onclick="eliminarUsuario(' . $u['id'] . ')" class="btn-delete" >Eliminar</button>';
+                echo '</td>';
+                echo '</tr>';
+            }
+            echo '</tbody></table>';
+            ?>
+            
+            <form id="form-usuario" class="formulario" method="post" action="includes/registro_usuario.php" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
                 <input type="hidden" name="edit_id" id="edit_id" value="">
                 <div class="formulario-grid">
@@ -1563,13 +1548,15 @@ echo '</div>';
                             <label for="clave">Contraseña *</label>
                             <div class="password-wrapper">
                                 <input type="password" id="clave" name="clave" required autocomplete="new-password">
-                                                            </div>
+                                <button type="button" class="toggle-password" onclick="mostrarOcultarContrasena('clave', this)"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="9" ry="6"/><circle cx="12" cy="12" r="2.5"/></svg></button>
+                            </div>
                         </div>
                         <div class="grupo-formulario">
                             <label for="confirmar_clave">Confirmar Contraseña *</label>
                             <div class="password-wrapper">
                                 <input type="password" id="confirmar_clave" name="confirmar_clave" required autocomplete="new-password">
-                                                            </div>
+                                <button type="button" class="toggle-password" onclick="mostrarOcultarContrasena('confirmar_clave', this)"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="9" ry="6"/><circle cx="12" cy="12" r="2.5"/></svg></button>
+                            </div>
                         </div>
                         <div class="grupo-formulario">
                             <label for="rol">Rol *</label>
@@ -1594,7 +1581,9 @@ echo '</div>';
                             <input type="text" id="respuesta3" name="respuesta3" required>
                         </div>
                         <div class="grupo-formulario" style="margin-top: 30px;">
-                            <button type="submit" id="btn-guardar-usuario" class="btn-save">Registrar Usuario</button>
+                            <button type="submit" id="btn-guardar-usuario" class="btn-save">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="9" ry="6"/><circle cx="12" cy="12" r="2.5"/><line x1="3" y1="3" x2="21" y2="21"/></svg> Registrar Usuario
+                            </button>
                             <button type="button" id="btn-cancelar" class="btn-cancel" style="display:none;margin-left:10px;">Cancelar</button>
                         </div>
                     </div>
@@ -1831,10 +1820,6 @@ echo '</div>';
 <script src="assets/js/desktop.js?v=<?= APP_VERSION ?>"></script>
 <script src="assets/js/dishes.js?v=<?= APP_VERSION ?>"></script>
 <script src="assets/js/dish-sync.js?v=<?= APP_VERSION ?>"></script>
-<script>
-function mostrarMensajeUsuario(msg, tipo) {
-    const mensajes = document.getElementById('usuarios-mensajes');
-    mensajes.innerHTML = `<div class="mensaje ${tipo}">${msg}</div>`;
     setTimeout(() => { mensajes.innerHTML = ''; }, 4000);
 }
 

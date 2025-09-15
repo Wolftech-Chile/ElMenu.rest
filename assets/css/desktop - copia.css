@@ -42,65 +42,6 @@ body{display:flex;flex-direction:column;height:100vh;color:var(--text);backgroun
 
 /* Responsive base - Móvil y Tablet */
 @media screen and (max-width: 768px){
-  .user-list-desktop { display: none !important; }
-  .user-list-mobile { display: block !important; }
-  .user-card {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    margin-bottom: 16px;
-    padding: 16px 18px 12px 18px;
-    box-shadow: 0 2px 8px #0001;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90vw;
-  }
-  .user-field { font-size: 15px; color: #222; margin-bottom: 4px; }
-  .user-label { font-weight: bold; color: #444; margin-right: 3px; }
-  .user-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; align-items: center; }
-  .user-actions .btn { width: 100%; font-size: 16px; }
-}
-
-@media screen and (min-width: 769px){
-  .user-list-desktop { display: block !important; }
-  .user-list-mobile { display: none !important; }
-}
-
-  .user-table tr {
-    display: flex !important;
-    flex-direction: column !important;
-    background: #fff !important;
-    border-radius: 8px !important;
-    box-shadow: 0 2px 8px #0001 !important;
-    margin-bottom: 12px !important;
-    padding: 8px 0 !important;
-    border: 1px solid #e5e7eb !important;
-  }
-  .user-table th, .user-table td {
-    display: block !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    text-align: left !important;
-    padding: 6px 12px !important;
-    margin-bottom: 4px !important;
-    border: none !important;
-    background: transparent !important;
-  }
-  .user-table td:last-child {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-  .user-table .btn {
-    width: 100% !important;
-    margin-top: 8px !important;
-    margin-bottom: 0 !important;
-    display: block !important;
-  }
-
     body {
         display: flex !important;
         flex-direction: column !important;
@@ -111,7 +52,7 @@ body{display:flex;flex-direction:column;height:100vh;color:var(--text);backgroun
     /* App-header completo arriba */
     .app-header {
         order: 1 !important;
-        padding: 20px !important;
+        padding: 4px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -310,7 +251,32 @@ body{display:flex;flex-direction:column;height:100vh;color:var(--text);backgroun
     }
 }
 
-
+@media screen and (max-width:600px){
+    html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .app-wrapper {
+        grid-template-columns: 0 1fr !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .sidebar {
+        position: fixed !important;
+        left: -220px !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        z-index: 20 !important;
+        transition: left .25s !important;
+    }
+    
+    .sidebar.open {
+        left: 0 !important;
+    }
+}
 
 [data-theme="day"] body{font-weight:500}
 [data-theme="day"] .panel-section{font-weight:500}
@@ -324,37 +290,36 @@ body{display:flex;flex-direction:column;height:100vh;color:var(--text);backgroun
 .logout-btn{padding:12px 20px;background:#7ac943;color:#000000;border:0;border-radius:var(--radius);font-weight:500;cursor:pointer;transition:var(--transition);height:44px;min-height:44px}
 .logout-btn:hover{background:#5a5a5a;color:#ffffff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
 .formulario-grid {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-  width: 100% !important;
-  padding: 0 8px !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 0 12px;
+  max-width: 100vw;
+  width: 100%;
+  margin: 0 auto 24px auto;
   box-sizing: border-box;
 }
 
   .user-table {
-  width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow-x: auto !important;
-}
-.user-table thead, .user-table tbody, .user-table tr {
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-}
-.user-table th, .user-table td {
-  display: block !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  text-align: left !important;
-  padding: 12px 8px !important;
-}
-.user-table tr {
-  margin-bottom: 18px !important;
-  border-bottom: 1px solid #e5e7eb !important;
-}
-
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+  }
+  .user-table thead, .user-table tbody, .user-table tr {
+    display: block !important;
+    width: 100% !important;
+  }
+  .user-table th, .user-table td {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+    padding: 12px 8px !important;
+  }
+  .user-table tr {
+    margin-bottom: 18px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
   .formulario-grid {
     display: flex !important;
     flex-direction: column !important;
@@ -375,6 +340,69 @@ body{display:flex;flex-direction:column;height:100vh;color:var(--text);backgroun
     margin: 8px 0 0 0 !important;
     display: block !important;
   }
+}
+  .formulario-grid, .panel-section, .cat-list, .dish-list {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-sizing: border-box;
+  }
+}
+@media (max-width: 600px) {
+  .cat-item {
+    display: flex !important;
+    align-items: center !important;
+    background: #fff !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    padding: 0 8px 0 0 !important;
+    margin-bottom: 14px !important;
+    box-shadow: 0 1px 4px #0001;
+    gap: 0 !important;
+    width: 100% !important;
+  }
+  .cat-item .grab {
+    font-size: 24px !important;
+    margin-right: 6px !important;
+    color: #aaa !important;
+    cursor: move !important;
+    flex-shrink: 0 !important;
+    padding-left: 8px !important;
+  }
+  .cat-item input {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    font-size: 1rem !important;
+    color: #000 !important;
+    padding: 16px 8px !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    font-family: inherit !important;
+  }
+  .cat-item .del-cat {
+    background: none !important;
+    border: none !important;
+    padding: 0 8px 0 8px !important;
+    margin-left: 6px !important;
+    color: #dc2626 !important;
+    font-size: 0 !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    width: 42px !important;
+    height: 42px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .cat-item .del-cat svg {
+    width: 42px !important;
+    height: 42px !important;
+    display: block !important;
+    stroke: #dc2626 !important;
+  }
+}
 
   /* USAR class="icon-btn" en los iconos de acción de platos (cámara, eliminar) para tamaño y alineación responsive */
   .icon-btn {
@@ -394,7 +422,7 @@ body{display:flex;flex-direction:column;height:100vh;color:var(--text);backgroun
     color: #7ac943 !important;
     transition: transform 0.2s, color 0.2s;
   }
-  .icon-btn.del-dish { color: #dc2626 !important; }
+  .icon-btn.del-dish { color: none!important; }
   .icon-btn:hover, .icon-btn.del-dish:hover { transform: scale(1.2) !important; color: inherit !important; background: none !important; border: none !important; outline: none !important; }
   .dish-item .dish-actions {
     display: flex !important;
@@ -564,7 +592,8 @@ body{display:flex;flex-direction:column;height:100vh;color:var(--text);backgroun
     margin-bottom: 8px !important;
     font-weight: 400 !important;
     display: block !important;
-    /* --- PLATOS: iconos grandes y juntos --- */
+  }
+  /* --- PLATOS: iconos grandes y juntos --- */
   .dish-item .dish-actions {
     display: flex !important;
     flex-direction: row !important;
@@ -847,7 +876,7 @@ body{display:flex;flex-direction:column;height:100vh;color:var(--text);backgroun
 .inline-form button:hover{background:#5a5a5a;color:#ffffff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
 
 .panel-section{display:none;animation:fadeIn .3s ease;background:#ffffff;border-radius:var(--radius);padding:24px;box-shadow:0 4px 12px var(--shadow);margin-bottom:80px;border:1px solid var(--border);transition:var(--transition);width:100%;max-width:100vw;overflow-x:auto;}
-.panel-section.active{display:flex; align-items: center; flex-direction:column; width:100% !important;}
+.panel-section.active{display:block}
 .tabs-inline{margin:16px 0;border-bottom:0px solid var(--border)}
 .tabs-inline button{padding:12px 20px;border:none;background:transparent;color:var(--gray-medium);cursor:pointer;border-bottom:2px solid transparent;font-weight:500;transition:var(--transition)}
 .tabs-inline button:hover{color:var(--accent)}
@@ -883,6 +912,19 @@ input:focus, textarea:focus, select:focus {
 .cat-item .del-cat{background:none;border:0;color:#dc2626;font-size:20px;cursor:pointer;padding:4px}
 .cat-item .del-cat:hover{color:#b91c1c}
 .dish-list{list-style:none;padding:0;margin-top:16px;width:100%;max-width:100vw;overflow-x:auto;}
+@media (max-width: 600px) {
+  .cat-item {
+    display: flex !important;
+    align-items: center !important;
+    background: #fff !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    padding: 0 8px 0 0 !important;
+    margin-bottom: 14px !important;
+    box-shadow: 0 1px 4px #0001;
+    gap: 0 !important;
+    width: 100% !important;
+  }
   .cat-item .grab {
     font-size: 24px !important;
     margin-right: 6px !important;
@@ -1184,37 +1226,6 @@ input:focus, textarea:focus, select:focus {
 
 /* Forzar responsive en móvil - Portrait específico */
 @media screen and (max-height: 900px) and (orientation: portrait){
-  .user-table tr {
-    display: flex !important;
-    flex-direction: column !important;
-    background: #fff !important;
-    border-radius: 8px !important;
-    box-shadow: 0 2px 8px #0001 !important;
-    margin-bottom: 12px !important;
-    padding: 8px 0 !important;
-    border: 1px solid #e5e7eb !important;
-  }
-  .user-table th, .user-table td {
-    display: block !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    text-align: left !important;
-    padding: 6px 12px !important;
-    margin-bottom: 4px !important;
-    border: none !important;
-    background: transparent !important;
-  }
-  .user-table td:last-child {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-  .user-table .btn {
-    width: 100% !important;
-    margin-top: 8px !important;
-    margin-bottom: 0 !important;
-    display: block !important;
-  }
-
     * {
         box-sizing: border-box !important;
     }
@@ -1337,9 +1348,11 @@ input:focus, textarea:focus, select:focus {
 @keyframes fade{from{opacity:.3}to{opacity:1}}
 
 /* Media Queries Responsive */
+@media (max-width:1200px){
     .backup-grid{grid-template-columns:1fr 1fr;gap:40px}
 }
 
+@media (max-width:900px){
     .backup-grid{grid-template-columns:1fr;gap:30px}
     .backup-import-controls{flex-direction:column;align-items:stretch;gap:12px}
     .import-form{width:100%}
@@ -1377,6 +1390,7 @@ input:focus, textarea:focus, select:focus {
     .panel-section{padding:16px !important;margin-bottom:20px !important}
 }
 
+@media (max-width:720px){
     .app-wrapper{grid-template-columns:0 1fr}
     .sidebar{position:fixed;left:-220px;top:0;bottom:0;z-index:20;transition:left .25s}
     .sidebar.open{left:0}
@@ -1551,6 +1565,11 @@ button:disabled, .btn:disabled, .btn-save:disabled, .btn-cancel:disabled, .btn-d
   height:30px;
   border-radius:var(--radius);
   border:1px solid rgba(255,255,255,0.5);
+}
+
+@media (max-width:700px){
+  .temas-grid,
+  .theme-preview-samples{grid-template-columns:1fr;}
 }
 
 /* Media queries para dish-item en móvil */
