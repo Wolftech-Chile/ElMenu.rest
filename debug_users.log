@@ -901,3 +901,43 @@ Data: Array
 
 )
 
+[2025-09-15 06:09:03] ========================================
+[2025-09-15 06:09:03] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+            [accion] => guardar_footer
+            [footer] => Hola mundi
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
+[2025-09-15 06:09:10] ========================================
+[2025-09-15 06:09:10] Inicio de solicitud POST
+Data: Array
+(
+    [POST] => Array
+        (
+            [accion] => agregar_categoria
+            [nombre] => Nueva
+            [csrf_token] => e7de736473d484388ad002a6e791e55281c3b009574a9379782c7c0d0d76cd82
+        )
+
+    [SERVER] => Array
+        (
+            [REQUEST_METHOD] => POST
+            [REQUEST_URI] => /desktop.php
+            [REMOTE_ADDR] => ::1
+        )
+
+)
+
